@@ -60,10 +60,7 @@
       };
 
       this.poolPosition = function() {
-        setInterval(function() {
-          controller.updatePositionFromService();
-          controller.poolPosition();
-        }, 500);
+        setInterval(controller.updatePositionFromService, 500);
       };
     }
   ]);
