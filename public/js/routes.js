@@ -4,13 +4,13 @@
       $routeProvider
         .when('/video', {
           templateUrl: '/templates/video.html',
-          controller: 'VideoController',
-          controllerAs: 'video'
+          controller: 'PlayerController',
+          controllerAs: 'player'
         })
         .when('/', {
           templateUrl: '/templates/video.html',
-          controller: 'VideoController',
-          controllerAs: 'video'
+          controller: 'PlayerController',
+          controllerAs: 'player'
         });
     });
 })();
