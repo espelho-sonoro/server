@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, render_template
 
-app = Flask(__name__, static_folder='../public', static_url_path='')
+app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return app.send_static_file('index.html')
+    return render_template('index.html')
 
 from app import video_service
