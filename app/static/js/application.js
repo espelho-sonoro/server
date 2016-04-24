@@ -14,30 +14,20 @@ $(function() {
   frame.controls.mouse.disable();
   frame.controls.keyboard.disable();
 
+  var videoSocket = io('/video');
+
   var setFramePosition = function(x, y) {
-    frame.orientation.x = x;
-    frame.orientation.y = y;
+    videoSocket.emit('position', {x:x, y:y});
   };
 
   var rotateFrame = function(x, y) {
-    $.ajax('/api/video/position', {
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({x: x, y: y})
-      })
-      .done(function(data) {
-        setFramePosition(data.x, data.y);
-      });
+    videoSocket.emit('rotate', {x:x, y:y});
   };
 
-  var poolVideoPosition = function() {
-    $.ajax('/api/video/position')
-      .done(function(data) {
-        setFramePosition(data.x, data.y);
-      });
-  };
-
-  setInterval(poolVideoPosition, 500);
+  videoSocket.on('position', function(data) {
+    frame.orientation.x = data.x;
+    frame.orientation.y = data.y;
+  });
 
   $('#downButton').bind('click', function() {
     rotateFrame(-0.2, 0);
