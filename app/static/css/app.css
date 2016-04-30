@@ -1,0 +1,18 @@
+html, body {
+  height: 100%;
+}
+
+.espelhos-content {
+}
+
+.messages-container {
+  height: 80%;
+  overflow: scroll;
+  word-wrap: break-word;
+}
+
+.messages-container ul {
+  list-style-type: none;
+  padding-left: 1em;
+  overflow: scroll;
+}

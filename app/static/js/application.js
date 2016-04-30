@@ -14,6 +14,10 @@ $(function() {
   frame.controls.mouse.disable();
   frame.controls.keyboard.disable();
 
+  frame.once('ready', function() {
+    $('#side-pane').height($('#video-pane').height());
+  });
+
   var videoSocket = io('/video');
 
   var setFramePosition = function(x, y) {

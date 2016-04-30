@@ -9,18 +9,24 @@
 
 <body>
   <title>Espelhos Sonoros</title>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Espelhos Sonoros</a>
+  <div class="container-fluid" >
+    <nav class="navbar navbar-default">
+      <div class="navbar-header" >
+        <a class="navbar-brand" href="#">Espelhos Sonoros</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a id="user-id" href="#"></a></li>
+      </ul>
+    </nav>
+    <div class="espelhos-content">
+      {% block container %}
+      {% endblock %}
     </div>
-  </nav>
-  <div class="container-fluid">
-    {% block container %}
-    {% endblock %}
   </div>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/axis.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/socket.io.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/application.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}" ></script>
 </body>
 </html>

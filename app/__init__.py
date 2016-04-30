@@ -9,3 +9,4 @@ def root():
     return render_template('index.html')
 
 from app import video_service
+from app import user_service
