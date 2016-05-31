@@ -1,5 +1,5 @@
 import os
-from app import socketio,app
+from app.service import socketio,app
 
 port = int(os.environ.get("PORT", 5000))
 
