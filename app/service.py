@@ -1,7 +1,10 @@
 import flask
 import flask_socketio as socket
 import flask_sqlalchemy as sql
+
+import uuid
 import math
+from datetime import datetime
 
 DEFAULT_VIDEO_ID = '1'
 
@@ -20,12 +23,33 @@ class VideoPosition(db.Model):
         self.y_position = float(y)
 
     def __json__(self):
-        return {'x': self.x_position, 'y': self.y_position}
+        return {
+            'x': self.x_position,
+            'y': self.y_position
+        }
 
     def __repr__(self):
         return "<app.service.VideoPosition, video_id: %s, x_position: %s, y_position: %s>" % \
             (self.video_id, self.x_position, self.y_position)
 
+class ChatMessage(db.Model):
+    uuid = db.Column(db.String, primary_key=True)
+    user_id = db.Column(db.String)
+    date = db.Column(db.DateTime)
+    message = db.Column(db.Text)
+
+    def __init__(self, user_id, date, message):
+        self.uuid = str(uuid.uuid4())
+        self.user_id = user_id
+        self.date = date
+        self.message = message
+
+    def __json__(self):
+        return {
+            'user': self.user_id,
+            'date': self.date.isoformat(),
+            'text': self.message
+        }
 
 class VideoPositionDAO(object):
     def __init__(self, db, video_class):
@@ -45,6 +69,19 @@ class VideoPositionDAO(object):
         position.y_position += movement['y']
         self.save(position)
 
+class ChatMessageDAO(object):
+    def __init__(self, db, chat_class):
+        self.chat_class = chat_class
+        self.db = db
+
+    def save(self, chat_message):
+        self.db.session.add(chat_message)
+        self.db.session.commit()
+
+    def list(self, limit=10):
+        return self.chat_class.query.limit(limit).all()
+
+chat_message_dao = ChatMessageDAO(db, ChatMessage)
 video_position_dao = VideoPositionDAO(db, VideoPosition)
 
 @app.route('/')
@@ -68,4 +105,6 @@ def force_position(content):
 
 @socketio.on('new-message', namespace='/chat')
 def new_message(message):
-    socket.emit('new-message', message, broadcast=True)
+    message = ChatMessage(message['user'], datetime.now(), message['text'])
+    chat_message_dao.save(message)
+    socket.emit('new-message', message.__json__(), broadcast=True)
