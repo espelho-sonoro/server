@@ -1,11 +1,24 @@
-import os
-from espelhos_sonoros.service import socketio, app, db
+from espelhos_sonoros import *
 
-port = int(os.environ.get("PORT", 5000))
-database = str(os.environ.get("DATABASE_URL", 'sqlite:///espelhos.db'))
+import flask
+import flask_socketio as socket
+import flask_sqlalchemy as sql
 
-app.config['SQLALCHEMY_DATABASE_URI'] = database
+def main():
 
-db.create_all()
+    app = flask.Flask('espelhos_sonoros')
+    socketio = socket.SocketIO(app)
+    db = sql.SQLAlchemy(app)
+    app.config.from_object('config.Config')
 
-socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    print('debug: ' + str(app.config['DEBUG']))
+    print('server_name: ' + app.config['SERVER_NAME'])
+
+    espelhos_sonoros(app, socketio, db)
+    socketio.run(app, host='0.0.0.0')
+
+if __name__ == '__main__':
+    import os
+    print('Fuck: ' + str(os.environ.get('DEBUG')))
+    print('What the: '+ os.environ.get('SERVER_NAME'))
+    main()
