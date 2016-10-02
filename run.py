@@ -1,5 +1,5 @@
 import os
-from app.service import socketio, app, db
+from espelhos_sonoros.service import socketio, app, db
 
 port = int(os.environ.get("PORT", 5000))
 database = str(os.environ.get("DATABASE_URL", 'sqlite:///espelhos.db'))
