@@ -8,6 +8,6 @@ def box(box, application):
     @application.route('/box', methods=['POST'])
     def register():
         other_box = request.get_json()
-        box.update(other_box)
+        box.update(request.remote_addr, other_box)
         return jsonify(box.__dict__)
 

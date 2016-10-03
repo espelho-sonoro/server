@@ -6,8 +6,7 @@ class Box(object):
     def __init__(self):
         self.address = 'localhost'
 
-    def update(self, other):
-        self.address = other['address']
-
+    def update(self, address, other):
+        self.address = address
 
 box(Box(), app)
