@@ -1,5 +1,9 @@
 from flask import jsonify, request
 
+import collections
+
+BoxMessage = collections.namedtuple('BoxMessage', ['name'])
+
 def box(box, application):
     @application.route('/box', methods=['GET'])
     def whois():
