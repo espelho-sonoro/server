@@ -17,3 +17,4 @@ class Config(object):
     GOOGLE_APP_ID           = str_config('GOOGLE_APP_ID', '1')
     GOOGLE_APP_SECRET       = str_config('GOOGLE_APP_SECRET', '1')
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -1,8 +1,8 @@
-import flask_socketio as socket
-
-DEFAULT_VIDEO_ID = '1'
-
 def video(app, socketio, dao):
+    import flask_socketio as socket
+
+    DEFAULT_VIDEO_ID = '1'
+
     def anounce_position(video_id):
         position = dao.get(video_id).__json__()
         socket.emit('position', position, broadcast=True, namespace='/video')

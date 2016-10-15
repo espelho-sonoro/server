@@ -1,4 +1,5 @@
-from .chat import chat
+from .chat  import chat
+from .queue import queue
 from .video import video
 from .oauth import oauth
 
