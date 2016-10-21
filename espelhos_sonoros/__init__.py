@@ -10,7 +10,8 @@ def espelhos_sonoros(app, socketio, db):
     video_dao = VideoPositionDAO(db)
     queue_dao = QueueDAO(db)
 
-    queue_controller = QueueController(queue_dao)
+    queue_controller = QueueController(socketio, queue_dao)
+    queue_controller.start_dequeing()
 
     db.create_all()
 
