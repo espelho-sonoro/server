@@ -17,8 +17,11 @@
 <div class="side-bar right-bar chat-bar">
   <div class="user"> 
     {% if session.is_logged %}
-      <img src="{{ session.user_picture }}"</img> {{ session.user_name }}
-      <a href="/logout">Logout<a>
+      <img src="{{ session.user_picture }}"</img> 
+      <div class="data">
+	<label>{{ session.user_name }}</label>
+      	<a href="/logout">Logout<a>
+      </div>
     {% else %}
       <a href="/login/facebook">Facebook</a>
       <a href="/login/google">Google</a>
