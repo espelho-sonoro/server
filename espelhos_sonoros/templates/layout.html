@@ -3,12 +3,10 @@
 <head>
   <meta charset="utf-8" >
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Optional theme -->
-  <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/style.less') }}" />
+  <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/app.less') }}" />
   <script type="text/javascript" src="{{ url_for('static', filename='js/less.js') }}"></script>  
 </head>
 
@@ -22,12 +20,3 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}" ></script>
 </body>
 </html>
-  <ul class="nav navbar-nav navbar-right">
-        {% if session.is_logged %}
-          <li><img src="{{ session.user_picture }}"</img> {{ session.user_name }} </li>
-          <li><a href="/logout">Logout<a></li>
-        {% else %}
-          <li><a href="/login/facebook">Facebook</a></li>
-          <li><a href="/login/google">Google</a></li>
-        {% endif %}
-      </ul>
