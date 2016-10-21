@@ -10,7 +10,7 @@ def google(app, oauth):
         consumer_key=app.config['GOOGLE_APP_ID'],
         consumer_secret=app.config['GOOGLE_APP_SECRET'],
         request_token_params={'scope': 'profile'}
-        )
+    )
 
     @google.tokengetter
     def get_google_token(token=None):
@@ -30,15 +30,15 @@ def google(app, oauth):
 
         if resp is None:
             flask.flash(u'You denied the request sign in.')
-            return flask.redirect(next_url)
+        else:
+            flask.session['google_token'] = (resp['access_token'], '')
+            user = google.get('userinfo')
 
-        flask.session['google_token'] = (resp['access_token'], '')
-        me = google.get('userinfo')
+            app.logger.info('User information: %s', user.data)
 
-        user = facebook.get('/me')
-        app.logger.info('User information: %s', user.data)
+            flask.session['is_logged'] = True
+            flask.session['user_name'] = user.data['name']
+            flask.session['user_picture'] = user.data['picture']
 
-        flask.session['google_user'] = user.data['name']
-
-        flask.flash(u'You signed in as %s.' % user.data['name'])
+            flask.flash(u'You signed in as %s.' % user.data['name'])
         return flask.redirect(next_url)

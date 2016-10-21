@@ -22,22 +22,25 @@ def facebook(app, oauth):
 
     @app.route('/oauth/facebook')
     def oauth_facebook():
-        next_url = flask.url_for('index')
+        next_url = flask.url_for('root')
         resp = facebook.authorized_response()
 
-        app.logger.info('Response from facebook: %s', resp)
+        app.logger.info('Response from facebook: %s', str(resp))
 
         if resp is None:
             flask.flash(u'You denied the request sign in.')
-            return flask.redirect(next_url)
+        else:
+            flask.session['facebook_token'] = (resp['access_token'], '')
 
-        flask.session['facebook_token'] = (resp['access_token'], '')
+            user = facebook.get('/me?fields=name,picture')
 
-        user = facebook.get('/me')
-        app.logger.info('User information: %s', user.data)
+            app.logger.info('User information: %s', user.data)
 
-        flask.session['username'] = user.data['name']
+            flask.session['is_logged'] = True
+            flask.session['user_name'] = user.data['name']
+            flask.session['user_picture'] = user.data['picture']['data']['url']
 
-        flask.flash(u'You signed in as %s.' % user.data['name'])
+            flask.flash(u'You signed in as %s.' % user.data['name'])
+
         return flask.redirect(next_url)
 

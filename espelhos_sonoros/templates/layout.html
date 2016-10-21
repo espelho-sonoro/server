@@ -15,7 +15,13 @@
         <a class="navbar-brand" href="#">Espelhos Sonoros</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a id="user-id" href="#"></a></li>
+        {% if session.is_logged %}
+          <li><img src="{{ session.user_picture }}"</img> {{ session.user_name }} </li>
+          <li><a href="/logout">Logout<a></li>
+        {% else %}
+          <li><a href="/login/facebook">Facebook</a></li>
+          <li><a href="/login/google">Google</a></li>
+        {% endif %}
       </ul>
     </nav>
     <div class="espelhos-content">
