@@ -3,18 +3,26 @@
 <head>
   <meta charset="utf-8" >
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet/less" type="text/css" href="{{ url_for('static', filename='css/style.less') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/less.js') }}"></script>  
 </head>
 
 <body>
-  <title>Espelhos Sonoros</title>
-  <div class="container-fluid" >
-    <nav class="navbar navbar-default">
-      <div class="navbar-header" >
-        <a class="navbar-brand" href="#">Espelhos Sonoros</a>
-      </div>
-      <ul class="nav navbar-nav navbar-right">
+  {% block container %}
+  {% endblock %}
+  <script type="text/javascript" src="{{ url_for('static', filename='lib/axis.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='lib/socket.io.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/application.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}" ></script>
+</body>
+</html>
+  <ul class="nav navbar-nav navbar-right">
         {% if session.is_logged %}
           <li><img src="{{ session.user_picture }}"</img> {{ session.user_name }} </li>
           <li><a href="/logout">Logout<a></li>
@@ -23,16 +31,3 @@
           <li><a href="/login/google">Google</a></li>
         {% endif %}
       </ul>
-    </nav>
-    <div class="espelhos-content">
-      {% block container %}
-      {% endblock %}
-    </div>
-  </div>
-  <script type="text/javascript" src="{{ url_for('static', filename='lib/axis.min.js') }}" ></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}" ></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='lib/socket.io.min.js') }}" ></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/application.js') }}" ></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}" ></script>
-</body>
-</html>
