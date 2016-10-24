@@ -13,10 +13,10 @@
 <body>
   {% block container %}
   {% endblock %}
+  <script type="text/javascript" src="{{ url_for('static', filename='lib/js.cookie.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/axis.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='lib/socket.io.min.js') }}" ></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/application.js') }}" ></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}" ></script>
 </body>
 </html>
