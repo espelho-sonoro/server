@@ -17,4 +17,4 @@ def espelhos_sonoros(app, socketio, db):
 
     chat(app, socketio, chat_dao, chat_dao.chat_class)
     video(app, socketio, video_dao)
-    queue(app, queue_controller)
+    queue(app, socketio, queue_controller)

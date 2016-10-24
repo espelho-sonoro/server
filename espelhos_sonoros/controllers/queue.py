@@ -2,12 +2,16 @@ from datetime import datetime
 
 import logging
 
+MINUTES_IN_CONTROL = 1
+TICK_INTERVAL_IN_SECONDS = 5
+
 class QueueController(object):
 
     def __init__(self, app, socketio, dao):
         self.dao = dao
         self.app = app
         self.socketio = socketio
+        self.change_controll_callback = lambda user: user
 
     def queue(self):
         queue = self.dao.list()
@@ -23,19 +27,24 @@ class QueueController(object):
     def __tick(self):
         while True:
             self.move_queue()
-            seconds_to_next_tick = 5 - (datetime.now().time().second % 5)
+            seconds_to_next_tick = TICK_INTERVAL_IN_SECONDS - (datetime.now().time().second % TICK_INTERVAL_IN_SECONDS)
             self.socketio.sleep(seconds_to_next_tick)
 
     def move_queue(self):
-        dones = self.dao.clear_done(1)
-        if dones:
-            self.app.logger.info('Cleaned elements: ' + str(dones))
-            head = self.dao.head()
-            self.assign_to_control(head)
+        done_controllers = self.dao.clear_done(MINUTES_IN_CONTROL)
+
+        if done_controllers:
+            self.app.logger.info('Cleaned elements: %s', str(done_controllers))
+        else:
+            self.app.logger.debug('Not cleaned queue')
+
+        controller = self.dao.head()
+        if controller and not controller.is_controlling:
+            self.assign_to_control(controller)
         else:
             self.app.logger.debug('Not cleaned queue')
 
     def assign_to_control(self, user):
-        if user and not user.started_control:
-            self.app.logger.info('Assigned ' + str(user) + ' to operate camera')
-            user.started_control = datetime.now()
+        self.app.logger.info('Change operator to: %s', str(user))
+        user.started_control = datetime.now()
+        self.change_controll_callback(user.user_id)

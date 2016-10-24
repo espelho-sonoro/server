@@ -1,4 +1,5 @@
 import flask
+import uuid
 
 def facebook(app, oauth):
     facebook = oauth.remote_app('Facebook',
@@ -37,10 +38,9 @@ def facebook(app, oauth):
             app.logger.info('User information: %s', user.data)
 
             flask.session['is_logged'] = True
+            flask.session['user_id'] = str(uuid.uuid4())
             flask.session['user_name'] = user.data['name']
             flask.session['user_picture'] = user.data['picture']['data']['url']
-
-            flask.flash(u'You signed in as %s.' % user.data['name'])
 
         return flask.redirect(next_url)
 

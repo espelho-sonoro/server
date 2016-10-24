@@ -13,6 +13,13 @@ def queue_element(db):
             self.entered_queue = entered_queue
             self.started_control = None
 
+        @property
+        def is_controlling(self):
+            return self.started_control is not None
+
+        def __str__(self):
+            return '<%s.QueueElement - %s>' % (__name__, self.__json__())
+
         def __json__(self):
             started_control = self.started_control.isoformat() if self.started_control else None
             return {
@@ -49,13 +56,6 @@ class QueueDAO(object):
         return self.clazz.query \
             .order_by(self.clazz.entered_queue) \
             .first()
-
-    def dequeue(self):
-        head = self.head()
-        if head:
-            self.db.session.delete(head)
-            self.db.session.commit()
-        return head
 
     def list(self, limit=10):
         return self.clazz.query \
