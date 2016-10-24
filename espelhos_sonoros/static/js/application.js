@@ -1,63 +1,94 @@
 $(function() {
-  var videoOpts = {
-    src: 'http://360.littlstar.com/production/a0a5746e-87ac-4f20-9724-ecba40429e54/mobile.mp4',
-    preload: true,
-    autoplay: true,
-    loop: true,
-    muted: true,
-    resizable: true,
-    crossorigin: true,
+
+  var setupVideo = function() {
+    var videoSocket = io('/video');
+
+    var rotateFrame = function(x, y) {
+      videoSocket.emit('rotate', {x:x, y:y});
+    };
+
+    $('#leftButton').bind('click', function() {
+      rotateFrame(0, 0.2);
+    });
+
+    $('#rightButton').bind('click', function() {
+      rotateFrame(0, -0.2);
+    });
   };
 
-  var frame = new Axis(document.querySelector('#video'), videoOpts);
-  frame.render();
-  frame.controls.mouse.disable();
-  frame.controls.keyboard.disable();
+  var setupChat = function() {
+    var chatSocket = io('/chat');
 
-  frame.once('ready', function() {
-    $('#side-pane').height($('#video-pane').height());
-  });
+    var formatMessage = function(message) {
+      return message.user + ': ' + message.text;
+    };
 
-  var videoSocket = io('/video');
+    var addMessage = function(message) {
+      $('#messages-container > ul').append($('<li>').text(formatMessage(message)));
+    };
 
-  var setFramePosition = function(x, y) {
-    videoSocket.emit('position', {x:x, y:y});
+    var sendMessage = function(message) {
+      chatSocket.emit('new-message', message);
+    };
+
+    chatSocket.on('new-message', function(message) {
+      addMessage(message);
+    });
+
+    $('#send-message-button').bind('click', function() {
+      var textArea = $('#send-message-text');
+      var textMessage = textArea.val();
+      textArea.val('');
+      var message= {user: userId, text: textMessage};
+      sendMessage(message);
+    });
+
+    $('#send-message-text').bind('keydown', function(event) {
+      if (event.keyCode == 13) {
+        $('#send-message-button').click();
+      }
+    });
   };
 
-  var rotateFrame = function(x, y) {
-    videoSocket.emit('rotate', {x:x, y:y});
+  var setupQueue = function() {
+    var queueSocket = io('/queue');
+
+    var buildQueueEntry = function(index, name) {
+      var badge = $('<span>').addClass('badge').text(index);
+      var userEntry = $('<p>').append(badge).append(name);
+      return $('<div>').addClass('item').append(userEntry);
+    };
+
+    var refreshQueue = function (queue) {
+      var newQueue = queue.map(function(element, index) {
+        return buildQueueEntry(index, element.name);
+      });
+      $('#queue-list').empty().append(newQueue);
+    };
+
+    var openControlls = function() {
+      $('.control-buttons').removeClass('disabled');
+    };
+
+    $('#join-queue-button').bind('click', function() {
+      queueSocket.emit('join');
+    });
+
+    queueSocket.on('updateList', function(queue) {
+      refreshQueue(queue);
+    });
+
+    queueSocket.on('controlling', function(queue) {
+      openControlls();
+    });
+
+    $.get('/queue').done(function(queue) { refreshQueue(queue) });
+
+    window.ESPELHOS = window.ESPELHOS || {};
+    window.ESPELHOS.refreshQueue = refreshQueue;
   };
 
-  videoSocket.on('position', function(data) {
-    frame.orientation.x = data.x;
-    frame.orientation.y = data.y;
-  });
-
-  $('#downButton').bind('click', function() {
-    rotateFrame(-0.2, 0);
-  });
-
-  $('#upButton').bind('click', function() {
-    rotateFrame(0.2, 0);
-  });
-
-  $('#leftButton').bind('click', function() {
-    rotateFrame(0, 0.2);
-  });
-
-  $('#rightButton').bind('click', function() {
-    rotateFrame(0, -0.2);
-  });
-
-  $('#centerButton').bind('click', function() {
-    setFramePosition(0, Math.PI/2);
-  });
-
-  $('#playButton').bind('click', function() {
-    frame.play();
-  });
-
-  $('#pauseButton').bind('click', function() {
-    frame.pause();
-  });
+  setupVideo();
+  setupChat();
+  setupQueue();
 });
