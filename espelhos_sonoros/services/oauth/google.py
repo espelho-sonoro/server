@@ -1,4 +1,5 @@
 import flask
+from .session_manager import set_current_user
 
 def google(app, oauth):
     google = oauth.remote_app('Google',
@@ -26,19 +27,16 @@ def google(app, oauth):
         next_url = flask.url_for('root')
         resp = google.authorized_response()
 
-        app.logger.info('Response from google: %s', resp)
+        app.logger.debug('Response from google: %s', resp)
 
-        if resp is None:
-            flask.flash(u'You denied the request sign in.')
+        if not resp:
+            flask.flash('Failed to sign-in')
         else:
             flask.session['google_token'] = (resp['access_token'], '')
             user = google.get('userinfo')
 
-            app.logger.info('User information: %s', user.data)
+            app.logger.debug('User information: %s', user.data)
 
-            flask.session['is_logged'] = True
-            flask.session['user_name'] = user.data['name']
-            flask.session['user_picture'] = user.data['picture']
+            set_current_user(user.data['name'], user.data['picture'])
 
-            flask.flash(u'You signed in as %s.' % user.data['name'])
         return flask.redirect(next_url)

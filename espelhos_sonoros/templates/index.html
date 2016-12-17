@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 video-header">
-      <h1>PPAP Pen-Pineapple-Apple-Pen</h1>
+      <h1 id="title">PPAP Pen-Pineapple-Apple-Pen</h2>
     </div>
   </div>
   <div class="row">
@@ -15,149 +15,52 @@
   </div>
 </div>
 <div class="side-bar right-bar chat-bar">
-  <div class="user"> 
+  <div class="user">
     {% if session.is_logged %}
-      <img src="{{ session.user_picture }}"</img> 
+      <img src="{{ session.user_picture }}"</img>
       <div class="data">
-	<label>{{ session.user_name }}</label>
-      	<a href="/logout">Logout<a>
+        <label>{{ session.user_name }}</label>
+        <a href="/logout">Logout<a>
       </div>
     {% else %}
       <a href="/login/facebook">Facebook</a>
       <a href="/login/google">Google</a>
     {% endif %}
   </div>
-  <div class="queue">
-    <div class="item">
-      <p><span class="badge">1º</span>Deodoro da Fonseca</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">2º</span>Floriano Peixoto</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">3º</span>Prudente de Morais</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">4º</span>Campos Sales</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">5º</span>Rodrigues Alves</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">6º</span>Afonso Pena</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">7º</span>Nilo Peçanha</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">8º</span>Hermes da Fonseca</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">9º</span>Venceslau Brás</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">10º</span>Delfim Moreira</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">11º</span>Epitácio Pessoa</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">12º</span>Artur Bernardes</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">13º</span>Washington Luís</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">14º</span>Getúlio Vargas</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">15</span>José Linhares</p>
-    </div>        
-    <div class="item">
-      <p><span class="badge">16º</span>Eurico Gaspar Dutra</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">17º</span>Getúlio Vargas</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">18º</span>Café Filho</p>
-    </div>        
-    <div class="item">
-      <p><span class="badge">19º</span>Carlos Luz</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">20º</span>Nereu Ramos</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">21º</span>Juscelino Kubitschek</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">22º</span>Jânio Quadros</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">23º</span>Ranieri Mazzilli</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">24º</span>João Goulart</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">25º</span>Ranieri Mazzilli</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">26º</span>Humberto Castelo Branco</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">27º</span>Artur da Costa e Silva</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">28º</span>Emílio Garrastazu Médici</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">29º</span>Ernesto Geisel</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">30º</span>João Figueiredo</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">31º</span>José Sarney</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">32º</span>Fernando Collor</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">33º</span>Itamar Franco</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">34º</span>Fernando Henrique Cardoso</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">35º</span>Luiz Inácio Lula da Silva</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">36º</span>Dilma Rousseff</p>
-    </div>
-    <div class="item">
-      <p><span class="badge">37º</span>Michel Temer</p>
-    </div>
+  <div id="queue-list" class="queue"></div>
+  <div id="test-buttons" class="row" >
+    <button id="test-refresh-queue-button" class="btn btn-default" >
+      <span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span>
+    </button>
+    <button id="test-join-queue-button" class="btn btn-default" >
+      <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+    </button>
+    <button id="test-left-button" class="btn btn-default" >
+      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
+    </button>
+    <button id="test-right-button" class="btn btn-default" >
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" ></span>
+    </button>
+    <button id="test-gain-control-button" class="btn btn-default" >
+      <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span>
+    </button>
   </div>
-  <div class="actions">
+  <div class="row actions">
     <div class="buttons">
-      <button id="upButton" class="btn btn-default">
-        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span>
-      </button>
       <button id="rightButton" class="btn btn-default">
         <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" ></span>
-      </button>
-      <button id="downButton" class="btn btn-default">
-        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ></span>
       </button>
       <button id="leftButton" class="btn btn-default">
         <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
       </button>
     </div>
-    <div class="message hide">
-      <p>Faça o login para comandar.</p>
-    </div>
+    {% if session.is_logged %}
+        <button id="join-queue-button" class="btn btn-default btn-block">Entrar na fila.</button>
+    {% else %}
+      <div class="message">
+        <button class="btn btn-default btn-block">Faça o login para comandar.</button>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

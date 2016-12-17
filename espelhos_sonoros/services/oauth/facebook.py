@@ -1,16 +1,17 @@
 import flask
-import uuid
+from .session_manager import set_current_user
 
 def facebook(app, oauth):
     facebook = oauth.remote_app('Facebook',
-            base_url='https://graph.facebook.com',
-            request_token_url=None,
-            access_token_url='/oauth/access_token',
-            authorize_url='https://www.facebook.com/dialog/oauth',
-            consumer_key=app.config['FACEBOOK_APP_ID'],
-            consumer_secret=app.config['FACEBOOK_APP_SECRET'],
-            request_token_params={'scope': 'public_profile'}
-            )
+        base_url='https://graph.facebook.com',
+        request_token_url=None,
+        access_token_url='/oauth/access_token',
+        access_token_method='GET',
+        authorize_url='https://www.facebook.com/dialog/oauth',
+        consumer_key=app.config['FACEBOOK_APP_ID'],
+        consumer_secret=app.config['FACEBOOK_APP_SECRET'],
+        request_token_params={'scope': 'public_profile'}
+    )
 
     @facebook.tokengetter
     def get_facebook_token(token=None):
@@ -26,21 +27,16 @@ def facebook(app, oauth):
         next_url = flask.url_for('root')
         resp = facebook.authorized_response()
 
-        app.logger.info('Response from facebook: %s', str(resp))
+        app.logger.debug('Response from facebook: %s', str(resp))
 
-        if resp is None:
-            flask.flash(u'You denied the request sign in.')
+        if not resp:
+            flask.flash('Failed to sign-in')
         else:
             flask.session['facebook_token'] = (resp['access_token'], '')
-
             user = facebook.get('/me?fields=name,picture')
 
-            app.logger.info('User information: %s', user.data)
+            app.logger.debug('User information: %s', user.data)
 
-            flask.session['is_logged'] = True
-            flask.session['user_id'] = str(uuid.uuid4())
-            flask.session['user_name'] = user.data['name']
-            flask.session['user_picture'] = user.data['picture']['data']['url']
+            set_current_user(user.data['name'], user.data['picture']['data']['url'])
 
         return flask.redirect(next_url)
-

@@ -1,20 +1,5 @@
 $(function() {
-
-  var setupVideo = function() {
-    var videoSocket = io('/video');
-
-    var rotateFrame = function(x, y) {
-      videoSocket.emit('rotate', {x:x, y:y});
-    };
-
-    $('#leftButton').bind('click', function() {
-      rotateFrame(0, 0.2);
-    });
-
-    $('#rightButton').bind('click', function() {
-      rotateFrame(0, -0.2);
-    });
-  };
+  var ESPELHOS = ESPELHOS || {};
 
   var setupChat = function() {
     var chatSocket = io('/chat');
@@ -68,27 +53,62 @@ $(function() {
 
     var openControlls = function() {
       $('.control-buttons').removeClass('disabled');
+      $('#title').text('Controlling motherfucker');
+      console.debug('Started controlling');
     };
 
     $('#join-queue-button').bind('click', function() {
       queueSocket.emit('join');
     });
 
+    $('#test-refresh-queue-button').bind('click', function() {
+      console.debug('Refreshing queue');
+      queueSocket.emit('list');
+    });
+
+    $('#test-gain-control-button').bind('click', function() {
+      console.debug('Gaining control');
+      queueSocket.emit('gainControl');
+    });
+
+    $('#test-join-queue-button').bind('click', function() {
+      console.debug('Joining queue');
+      queueSocket.emit('join');
+    });
+
     queueSocket.on('updateList', function(queue) {
+      console.debug('Updating queue: ', queue);
       refreshQueue(queue);
     });
 
-    queueSocket.on('controlling', function(queue) {
-      openControlls();
+    queueSocket.on('startControl', function() {
+      console.debug('Starting to control');
+      alert('Controlando!');
     });
 
-    $.get('/queue').done(function(queue) { refreshQueue(queue) });
+    queueSocket.emit('list');
 
-    window.ESPELHOS = window.ESPELHOS || {};
-    window.ESPELHOS.refreshQueue = refreshQueue;
+    ESPELHOS.refreshQueue = refreshQueue;
   };
 
-  setupVideo();
+  var setupControlls = function() {
+    var controllSocket = io('/control');
+
+    $('#test-right-button').bind('click', function() {
+      console.debug('Emitting right');
+      controllSocket.emit('RIGHT');
+    });
+
+    $('#test-left-button').bind('click', function() {
+      console.debug('Emitting left');
+      controllSocket.emit('LEFT');
+    });
+
+  };
+
   setupChat();
   setupQueue();
+  setupControlls();
+
+  window.ESPELHOS = ESPELHOS;
 });

@@ -21,8 +21,13 @@ class QueueController(object):
         return self.socketio.start_background_task(target=self.__tick)
 
     def append_queue(self, new_element):
-        self.dao.save(new_element.id, new_element.name, datetime.now())
-        return self.queue()
+        try:
+            self.dao.save(new_element.id, new_element.name, datetime.now())
+        except Exception as e:
+            self.app.logger.error('Failed to insert user in queue: %s', e)
+            return False
+        else:
+            return self.queue()
 
     def __tick(self):
         while True:
