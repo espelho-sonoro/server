@@ -58,7 +58,7 @@ $(function() {
     };
 
     $('#join-queue-button').bind('click', function() {
-      queueSocket.emit('join');
+      queueSocket.emit('enterQueue');
     });
 
     $('#test-refresh-queue-button').bind('click', function() {
@@ -73,10 +73,10 @@ $(function() {
 
     $('#test-join-queue-button').bind('click', function() {
       console.debug('Joining queue');
-      queueSocket.emit('join');
+      queueSocket.emit('enterQueue');
     });
 
-    queueSocket.on('updateList', function(queue) {
+    queueSocket.on('updateQueue', function(queue) {
       console.debug('Updating queue: ', queue);
       refreshQueue(queue);
     });

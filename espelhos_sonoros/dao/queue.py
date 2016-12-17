@@ -43,12 +43,11 @@ class QueueDAO(object):
         self.db.session.commit()
 
     def clear_done(self, minutes):
-        limit_time = datetime.now() - timedelta(minutes=minutes)
+        #tlimit_time = datetime.now() - timedelta(minutes=minutes)
+        limit_time = datetime.now() - timedelta(seconds=10)
         dones = self.clazz.query \
             .filter(self.clazz.started_control < limit_time) \
-            .all()
-        for done in dones:
-            self.db.session.delete(done)
+            .delete()
         self.db.session.commit()
         return dones
 

@@ -3,9 +3,13 @@ import os
 def str_config(key, default):
     return str(os.environ.get(key, default))
 
+def bool_config(key, default):
+    return str(os.environ.get(key, default))
+
 class Config(object):
     DEBUG                   = str_config('DEBUG', 'True') == 'True'
     SQLALCHEMY_DATABASE_URI = str_config("DATABASE_URL", 'sqlite:///espelhos.db')
+    SQLALCHEMY_ECHO         = str_config('SQLALCHEMY_ECHO', 'False') == 'True'
 
     SECRET_KEY              = str_config('SECRET_KEY', '1')
     SERVER_NAME             = str_config('SERVER_NAME', 'localhost:5000')

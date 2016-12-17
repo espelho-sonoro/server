@@ -12,10 +12,15 @@ class QueueController(object):
         self.app = app
         self.socketio = socketio
         self.change_controll_callback = lambda user: user
+        self.update_queue_callback = lambda: None
 
     def queue(self):
         queue = self.dao.list()
         return [ qe.__json__() for qe in queue ]
+
+    def current_controller_id(self):
+        controller = self.dao.head()
+        return controller.user_id if controller else None
 
     def start_dequeing(self):
         return self.socketio.start_background_task(target=self.__tick)
@@ -38,8 +43,9 @@ class QueueController(object):
     def move_queue(self):
         done_controllers = self.dao.clear_done(MINUTES_IN_CONTROL)
 
-        if done_controllers:
-            self.app.logger.info('Cleaned elements: %s', str(done_controllers))
+        if done_controllers > 0:
+            self.app.logger.info('Cleaned elements: %i', done_controllers)
+            self.update_queue_callback()
         else:
             self.app.logger.debug('Not cleaned queue')
 
@@ -47,7 +53,7 @@ class QueueController(object):
         if controller and not controller.is_controlling:
             self.assign_to_control(controller)
         else:
-            self.app.logger.debug('Not cleaned queue')
+            self.app.logger.debug('No controller available')
 
     def assign_to_control(self, user):
         self.app.logger.info('Change operator to: %s', str(user))
