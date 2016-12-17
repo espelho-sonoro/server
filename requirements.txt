@@ -2,4 +2,5 @@ Flask
 Flask-OAuthlib
 Flask-SocketIO
 Flask-SQLAlchemy
+eventlet
 psycopg2

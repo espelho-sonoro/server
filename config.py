@@ -1,15 +1,16 @@
 import os
+from distutils.util import strtobool
 
 def str_config(key, default):
     return str(os.environ.get(key, default))
 
 def bool_config(key, default):
-    return str(os.environ.get(key, default))
+    return strtobool(os.environ.get(key, str(default)))
 
 class Config(object):
-    DEBUG                   = str_config('DEBUG', 'True') == 'True'
+    DEBUG                   = bool_config('DEBUG', True)
     SQLALCHEMY_DATABASE_URI = str_config("DATABASE_URL", 'sqlite:///espelhos.db')
-    SQLALCHEMY_ECHO         = str_config('SQLALCHEMY_ECHO', 'False') == 'True'
+    SQLALCHEMY_ECHO         = bool_config('SQLALCHEMY_ECHO', False)
 
     SECRET_KEY              = str_config('SECRET_KEY', '1')
     SERVER_NAME             = str_config('SERVER_NAME', 'localhost:5000')

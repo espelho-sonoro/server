@@ -11,7 +11,8 @@ class QueueController(object):
         self.dao = dao
         self.app = app
         self.socketio = socketio
-        self.change_controll_callback = lambda user: user
+        self.assign_user_callback = lambda user: user
+        self.remove_users_callback = lambda users: users
         self.update_queue_callback = lambda: None
 
     def queue(self):
@@ -43,8 +44,9 @@ class QueueController(object):
     def move_queue(self):
         done_controllers = self.dao.clear_done(MINUTES_IN_CONTROL)
 
-        if done_controllers > 0:
-            self.app.logger.info('Cleaned elements: %i', done_controllers)
+        if done_controllers:
+            self.app.logger.info('Cleaned elements: %s', done_controllers)
+            self.remove_users_callback(done_controllers)
             self.update_queue_callback()
         else:
             self.app.logger.debug('Not cleaned queue')
@@ -58,4 +60,4 @@ class QueueController(object):
     def assign_to_control(self, user):
         self.app.logger.info('Change operator to: %s', str(user))
         user.started_control = datetime.now()
-        self.change_controll_callback(user.user_id)
+        self.assign_user_callback(user)

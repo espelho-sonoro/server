@@ -1,5 +1,5 @@
 from sqlalchemy.exc import IntegrityError
-from flask_socketio import join_room, rooms
+from flask_socketio import close_room, leave_room, join_room, rooms
 import flask
 
 def queue(app, socketio, controller):
@@ -13,11 +13,19 @@ def queue(app, socketio, controller):
         app.logger.debug('New user list: %s', queue)
         socketio.emit('updateQueue', queue, namespace='/queue', broadcast=True)
 
-    def change_controlling_user(user_id):
-        app.logger.info('Send controlling message to: %s', user_id)
-        socketio.emit('startControl', namespace='/queue', room=user_id)
+    def remove_controllers(users):
+        if len(users) > 1:
+            app.logger.warning('INCONSISTENT STATE, more than one controller cleaned: %s', users)
+        for user in users:
+            app.logger.debug('Sending stop controll to user: %s', user)
+            socketio.emit('stopControl', namespace='/queue', room=user.user_id)
 
-    controller.change_controll_callback = change_controlling_user
+    def change_controlling_user(user):
+        app.logger.info('Send controlling message to: %s', user.user_id)
+        socketio.emit('startControl', namespace='/queue', room=user.user_id)
+
+    controller.assign_user_callback = change_controlling_user
+    controller.remove_users_callback = remove_controllers
     controller.update_queue_callback = update_queue
 
     @socketio.on('enterQueue', namespace='/queue')

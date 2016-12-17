@@ -47,7 +47,9 @@ class QueueDAO(object):
         limit_time = datetime.now() - timedelta(seconds=10)
         dones = self.clazz.query \
             .filter(self.clazz.started_control < limit_time) \
-            .delete()
+            .all()
+        for done in dones:
+            self.db.session.delete(done)
         self.db.session.commit()
         return dones
 

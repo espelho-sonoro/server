@@ -13,8 +13,7 @@ def main():
 
     espelhos_sonoros(app, socketio, db)
 
-    db.create_all()
-    socketio.run(app, host='0.0.0.0', use_reloader=True)
+    socketio.run(app, host='0.0.0.0')
 
 if __name__ == '__main__':
     main()

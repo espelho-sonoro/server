@@ -86,6 +86,11 @@ $(function() {
       alert('Controlando!');
     });
 
+    queueSocket.on('stopControl', function() {
+      console.debug('Stoping control');
+      alert('Descontrolando!');
+    });
+
     queueSocket.emit('list');
 
     ESPELHOS.refreshQueue = refreshQueue;
