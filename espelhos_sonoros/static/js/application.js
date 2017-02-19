@@ -92,8 +92,6 @@ $(function() {
     });
 
     queueSocket.emit('list');
-
-    ESPELHOS.refreshQueue = refreshQueue;
   };
 
   var setupControlls = function() {

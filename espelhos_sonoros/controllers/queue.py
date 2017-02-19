@@ -2,9 +2,6 @@ from datetime import datetime
 
 import logging
 
-MINUTES_IN_CONTROL = 1
-TICK_INTERVAL_IN_SECONDS = 5
-
 class QueueController(object):
 
     def __init__(self, app, socketio, dao):
@@ -36,13 +33,14 @@ class QueueController(object):
             return self.queue()
 
     def __tick(self):
+        tick_interval = self.app.config['TICK_INTERVAL'] 
         while True:
             self.move_queue()
-            seconds_to_next_tick = TICK_INTERVAL_IN_SECONDS - (datetime.now().time().second % TICK_INTERVAL_IN_SECONDS)
+            seconds_to_next_tick = tick_interval - (datetime.now().time().second % tick_interval)
             self.socketio.sleep(seconds_to_next_tick)
 
     def move_queue(self):
-        done_controllers = self.dao.clear_done(MINUTES_IN_CONTROL)
+        done_controllers = self.dao.clear_done(self.app.config['USER_ROTATION_TIME'])
 
         if done_controllers:
             self.app.logger.info('Cleaned elements: %s', done_controllers)

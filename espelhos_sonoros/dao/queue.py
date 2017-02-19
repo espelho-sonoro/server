@@ -23,10 +23,10 @@ def queue_element(db):
         def __json__(self):
             started_control = self.started_control.isoformat() if self.started_control else None
             return {
-                    'id': self.user_id,
-                    'name': self.user_name,
-                    'entered_queue': self.entered_queue.isoformat(),
-                    'started_control': started_control
+                        'id': self.user_id,
+                        'name': self.user_name,
+                        'entered_queue': self.entered_queue.isoformat(),
+                        'started_control': started_control
                     }
 
     return QueueElement
@@ -42,9 +42,8 @@ class QueueDAO(object):
         self.db.session.add(element)
         self.db.session.commit()
 
-    def clear_done(self, minutes):
-        #tlimit_time = datetime.now() - timedelta(minutes=minutes)
-        limit_time = datetime.now() - timedelta(seconds=10)
+    def clear_done(self, seconds):
+        limit_time = datetime.now() - timedelta(seconds=seconds)
         dones = self.clazz.query \
             .filter(self.clazz.started_control < limit_time) \
             .all()
