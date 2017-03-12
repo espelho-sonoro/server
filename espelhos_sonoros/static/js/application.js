@@ -1,40 +1,6 @@
 $(function() {
   var ESPELHOS = ESPELHOS || {};
 
-  var setupChat = function() {
-    var chatSocket = io('/chat');
-
-    var formatMessage = function(message) {
-      return message.user + ': ' + message.text;
-    };
-
-    var addMessage = function(message) {
-      $('#messages-container > ul').append($('<li>').text(formatMessage(message)));
-    };
-
-    var sendMessage = function(message) {
-      chatSocket.emit('new-message', message);
-    };
-
-    chatSocket.on('new-message', function(message) {
-      addMessage(message);
-    });
-
-    $('#send-message-button').bind('click', function() {
-      var textArea = $('#send-message-text');
-      var textMessage = textArea.val();
-      textArea.val('');
-      var message= {user: userId, text: textMessage};
-      sendMessage(message);
-    });
-
-    $('#send-message-text').bind('keydown', function(event) {
-      if (event.keyCode == 13) {
-        $('#send-message-button').click();
-      }
-    });
-  };
-
   var setupQueue = function() {
     var queueSocket = io('/queue');
 
@@ -44,7 +10,7 @@ $(function() {
       return $('<div>').addClass('item').append(userEntry);
     };
 
-    var refreshQueue = function (queue) {
+    var updateQueueDiv = function (queue) {
       var newQueue = queue.map(function(element, index) {
         return buildQueueEntry(index, element.name);
       });
@@ -52,66 +18,68 @@ $(function() {
     };
 
     var openControlls = function() {
-      $('.control-buttons').removeClass('disabled');
-      $('#title').text('Controlling motherfucker');
-      console.debug('Started controlling');
+      $('.controller-container-commands').removeClass('hidden');
+      $('.controller-container-join-queue').addClass('hidden');
     };
+
+    var closeControlls = function() {
+      $('.controller-container-commands').addClass('hidden');
+      $('.controller-container-join-queue').removeClass('hidden');
+    }
+
+    var isController = function() {
+      queueSocket.emit('isController');
+    };
+
+    var updateQueue = function() {
+      queueSocket.emit('getQueue');
+    }
 
     $('#join-queue-button').bind('click', function() {
       queueSocket.emit('enterQueue');
     });
 
-    $('#test-refresh-queue-button').bind('click', function() {
-      console.debug('Refreshing queue');
-      queueSocket.emit('list');
-    });
-
-    $('#test-gain-control-button').bind('click', function() {
-      console.debug('Gaining control');
-      queueSocket.emit('gainControl');
-    });
-
-    $('#test-join-queue-button').bind('click', function() {
-      console.debug('Joining queue');
-      queueSocket.emit('enterQueue');
-    });
-
     queueSocket.on('updateQueue', function(queue) {
-      console.debug('Updating queue: ', queue);
-      refreshQueue(queue);
+      updateQueueDiv(queue);
     });
 
     queueSocket.on('startControl', function() {
-      console.debug('Starting to control');
-      alert('Controlando!');
+      openControlls();
     });
 
     queueSocket.on('stopControl', function() {
-      console.debug('Stoping control');
-      alert('Descontrolando!');
+      closeControlls();
     });
 
-    queueSocket.emit('list');
+    ESPELHOS.updateQueue = updateQueue;
+    ESPELHOS.isController = isController;
   };
 
   var setupControlls = function() {
     var controllSocket = io('/control');
 
-    $('#test-right-button').bind('click', function() {
-      console.debug('Emitting right');
+    var moveRight = function() {
       controllSocket.emit('RIGHT');
-    });
+    }
 
-    $('#test-left-button').bind('click', function() {
-      console.debug('Emitting left');
+    var moveLeft = function() {
       controllSocket.emit('LEFT');
+    }
+
+    $('#controller-right-button').bind('click', function() {
+      moveRight();
     });
 
+    $('#controller-left-button').bind('click', function() {
+      moveLeft();
+    });
   };
 
-  setupChat();
   setupQueue();
   setupControlls();
+
+  ESPELHOS.updateQueue();
+  ESPELHOS.isController();
 
   window.ESPELHOS = ESPELHOS;
 });

@@ -1,6 +1,6 @@
 from flask import session, redirect
 
-def oauth(app):
+def oauth_service(app):
     from flask_oauthlib.client import OAuth
     from .facebook import facebook
     from .google import google

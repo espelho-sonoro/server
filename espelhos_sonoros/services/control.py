@@ -1,6 +1,6 @@
 import flask
 
-def control(app, socketio, queue_controller, camera_controller):
+def control_service(app, socketio, queue_controller, camera_controller):
 
     @socketio.on('LEFT', namespace='/control')
     def move_left():

@@ -8,11 +8,12 @@ def main():
     app = flask.Flask('espelhos_sonoros')
     app.config.from_object('config.Config')
 
-    socketio = SocketIO(app)
+    socketio = SocketIO(app, async_mode='threading')
     db = SQLAlchemy(app)
 
     espelhos_sonoros(app, socketio, db)
 
+    app.logger.info('Started server.')
     socketio.run(app, host='0.0.0.0')
 
 if __name__ == '__main__':

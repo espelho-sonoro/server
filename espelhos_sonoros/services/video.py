@@ -1,4 +1,4 @@
-def video(app, socketio, dao):
+def video_service(app, socketio, dao):
     import flask_socketio as socket
 
     DEFAULT_VIDEO_ID = '1'

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import logging
 
@@ -12,50 +12,41 @@ class QueueController(object):
         self.remove_users_callback = lambda users: users
         self.update_queue_callback = lambda: None
 
-    def queue(self):
-        queue = self.dao.list()
+    def queue(self, limit=10):
+        queue = self.dao.list(limit)
         return [ qe.__json__() for qe in queue ]
 
     def current_controller_id(self):
         controller = self.dao.head()
         return controller.user_id if controller else None
 
-    def start_dequeing(self):
-        return self.socketio.start_background_task(target=self.__tick)
-
-    def append_queue(self, new_element):
+    def append_queue(self, queue_element):
         try:
-            self.dao.save(new_element.id, new_element.name, datetime.now())
+            self.dao.save(queue_element.id, queue_element.name, queue_element.room, datetime.now())
         except Exception as e:
             self.app.logger.error('Failed to insert user in queue: %s', e)
             return False
         else:
-            return self.queue()
+            return True
 
-    def __tick(self):
-        tick_interval = self.app.config['TICK_INTERVAL'] 
-        while True:
-            self.move_queue()
-            seconds_to_next_tick = tick_interval - (datetime.now().time().second % tick_interval)
-            self.socketio.sleep(seconds_to_next_tick)
-
-    def move_queue(self):
-        done_controllers = self.dao.clear_done(self.app.config['USER_ROTATION_TIME'])
-
-        if done_controllers:
-            self.app.logger.info('Cleaned elements: %s', done_controllers)
-            self.remove_users_callback(done_controllers)
+    def remove_users(self, users):
+        if users:
+            for user in users:
+                self.dao.remove(user)
+            self.remove_users_callback(users)
             self.update_queue_callback()
-        else:
-            self.app.logger.debug('Not cleaned queue')
 
-        controller = self.dao.head()
-        if controller and not controller.is_controlling:
-            self.assign_to_control(controller)
-        else:
-            self.app.logger.debug('No controller available')
+
+    def list_done(self, rotation_time):
+        limit_time = datetime.now() - timedelta(seconds=rotation_time)
+        self.app.logger.debug('Cleaning users that started before: %s', limit_time)
+        return self.dao.list_done(limit_time)
+
+    def next_candidate(self):
+        return self.dao.next_candidate()
 
     def assign_to_control(self, user):
         self.app.logger.info('Change operator to: %s', str(user))
         user.started_control = datetime.now()
         self.assign_user_callback(user)
+

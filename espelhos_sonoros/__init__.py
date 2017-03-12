@@ -1,23 +1,31 @@
 from .controllers import *
 from .dao import *
 from .services import *
+from .workers import *
 
 def espelhos_sonoros(app, socketio, db):
-    root(app)
-    oauth(app)
-
-    chat_dao = ChatMessageDAO(db)
+    app.logger.info('Creating application.')
     video_dao = VideoPositionDAO(db)
     queue_dao = QueueDAO(db)
 
+    app.logger.info('Created models')
     db.create_all()
 
+    app.logger.info('Created database')
     queue_controller = QueueController(app, socketio, queue_dao)
-    queue_controller.start_dequeing()
-
     camera_controller = object()
 
-    chat(app, socketio, chat_dao, chat_dao.chat_class)
-    video(app, socketio, video_dao)
-    queue(app, socketio, queue_controller)
-    control(app, socketio, queue_controller, camera_controller)
+    app.logger.info('Created controllers')
+    queue_worker = QueueWorker(app, socketio, queue_controller)
+
+    app.logger.info('Created workers')
+    templates_service(app)
+    oauth_service(app)
+    queue_service(app, socketio, queue_controller)
+    control_service(app, socketio, queue_controller, camera_controller)
+
+    app.logger.info('Created services')
+
+    queue_worker.start_dequeing()
+
+    app.logger.info('Started workers')

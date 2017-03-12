@@ -1,0 +1,29 @@
+ <div class="controller-container" >
+  {% if not session.is_logged %}
+    <h4>Faça o login.</h4>
+    <div class="controller-container-login">
+      <a class="btn btn-block btn-social btn-facebook" href="/login/facebook">
+        <i class="fa fa-facebook"></i> Entrar com facebook
+      </a>
+      <a class="btn btn-block btn-social btn-google" href="/login/google">
+        <i class="fa fa-google"></i> Entrar com google
+      </a>
+    </div>
+  {% else %}
+    <div class="controller-container-user-info row">
+      <img class="col-md-4" src="{{ session.user_picture }}">
+      <p class="col-md-8">{{ session.user_name }} (<a href="/logout">Logout</a>) </p> 
+    </div>
+    <div id="controller-container-join-queue col-md-12">
+      <button id="join-queue-button"  class="btn btn-default btn-block">Entrar na fila.</button>
+    </div>
+    <div id="controller-container-commands col-md-12" class="hidden">
+      <button id="controller-left-button" class="btn btn-default" >
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
+      </button>
+      <button id="controller-right-button" class="btn btn-default" >
+        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" ></span>
+      </button>
+    </div>
+  {% endif %}
+</div>

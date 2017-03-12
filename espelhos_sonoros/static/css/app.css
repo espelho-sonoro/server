@@ -25,30 +25,6 @@ body {
 .chat-bar {
   background-color: #F9FAFC;
 }
-.chat-bar .actions,
-.chat-bar .user {
-  position: fixed;
-  height: 80px;
-  width: inherit;
-  background-color: #FFF;
-  padding: 10px 10px;
-  text-align: center;
-  border: 1px solid #EEE;
-}
-.chat-bar .user {
-  top: 0;
-  text-align: left;
-  display: inline-flex;
-}
-.chat-bar .user label {
-  display: block;
-}
-.chat-bar .user img {
-  height: 100%;
-}
-.chat-bar .user .data {
-  padding: 10px 10px 0px;
-}
 .chat-bar .queue {
   position: fixed;
   top: 80px;

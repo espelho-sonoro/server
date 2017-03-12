@@ -1,66 +1,26 @@
 {% extends "layout.html" %}
 {% block container %}
 <div class="container">
-  <div class="row">
-    <div class="col-md-12 video-header">
-      <h1 id="title">PPAP Pen-Pineapple-Apple-Pen</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="video-wrapper">
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/oWRuNtUacxQ" frameborder="0" allowfullscreen></iframe>
+  <div class="row" >
+    <div class="col-md-9" >
+      <div class="video-container" >
+        <div class="video-container-header">
+          <h1 id="title" >PPAP Pen-Pineapple-Apple-Pen</h1>
+        </div>
+        <div class="video-container-wrapper embed-responsive embed-responsive-16by9">
+          <iframe src="https://www.youtube.com/embed/oWRuNtUacxQ" frameborder="0" allowfullscreen></iframe>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="side-bar right-bar chat-bar">
-  <div class="user">
-    {% if session.is_logged %}
-      <img src="{{ session.user_picture }}"</img>
-      <div class="data">
-        <label>{{ session.user_name }}</label>
-        <a href="/logout">Logout<a>
+    <div class="col-md-3" >
+      <div class="sidebar-container" >
+        {% include "controller.html" %}
+        <div class="queue-container">
+          <h3 class="queue-container-header">Pessoas na fila</h3>
+          <div id="queue-list" class="queue-container-list"></div>
+        </div>
       </div>
-    {% else %}
-      <a href="/login/facebook">Facebook</a>
-      <a href="/login/google">Google</a>
-    {% endif %}
-  </div>
-  <div id="queue-list" class="queue"></div>
-  <div id="test-buttons" class="row" >
-    <button id="test-refresh-queue-button" class="btn btn-default" >
-      <span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span>
-    </button>
-    <button id="test-join-queue-button" class="btn btn-default" >
-      <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
-    </button>
-    <button id="test-left-button" class="btn btn-default" >
-      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
-    </button>
-    <button id="test-right-button" class="btn btn-default" >
-      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" ></span>
-    </button>
-    <button id="test-gain-control-button" class="btn btn-default" >
-      <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span>
-    </button>
-  </div>
-  <div class="row actions">
-    <div class="buttons">
-      <button id="rightButton" class="btn btn-default">
-        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true" ></span>
-      </button>
-      <button id="leftButton" class="btn btn-default">
-        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
-      </button>
     </div>
-    {% if session.is_logged %}
-        <button id="join-queue-button" class="btn btn-default btn-block">Entrar na fila.</button>
-    {% else %}
-      <div class="message">
-        <button class="btn btn-default btn-block">Faça o login para comandar.</button>
-      </div>
-    {% endif %}
   </div>
 </div>
 {% endblock %}

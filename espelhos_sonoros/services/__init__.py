@@ -1,12 +1,11 @@
-from .chat  import chat
-from .queue import queue
-from .video import video
-from .oauth import oauth
-from .control import control
+from .queue import queue_service
+from .video import video_service
+from .oauth import oauth_service
+from .control import control_service
 
 import flask
 
-def root(app):
+def templates_service(app):
     @app.route('/')
     def root():
         return flask.render_template('index.html')
