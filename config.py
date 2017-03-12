@@ -11,8 +11,9 @@ def int_config(key, default):
     return int(os.environ.get(key, str(default)))
 
 class Config(object):
-    DEBUG                           = bool_config('DEBUG', True)
+    DEBUG                           = bool_config('DEBUG', False)
     SQLALCHEMY_ECHO                 = bool_config('SQLALCHEMY_ECHO', False)
+    SQLALCHEMY_TRACK_MODIFICATIONS  = bool_config('SQLALCHEMY_TRACK_MODIFICATIONS', False)
 
     SQLALCHEMY_DATABASE_URI         = str_config("DATABASE_URL", 'sqlite:///espelhos.db')
 
@@ -30,5 +31,3 @@ class Config(object):
     TICK_INTERVAL                   = int_config('TICK_INTERVAL', 5) # seconds
 
     LOGGER_HANDLER_POLICY           = 'always'
-
-    SQLALCHEMY_TRACK_MODIFICATIONS  = False
