@@ -18,7 +18,6 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI         = str_config("DATABASE_URL", 'sqlite:///espelhos.db')
 
     SECRET_KEY                      = str_config('SECRET_KEY', '1')
-    SERVER_NAME                     = str_config('SERVER_NAME', 'localhost:5000')
     PREFERRED_URL_SCHEME            = str_config('PREFERRED_URL_SCHEME', 'http')
 
     FACEBOOK_APP_ID                 = str_config('FACEBOOK_APP_ID', '1')
@@ -33,4 +32,5 @@ class Config(object):
     PORT                            = int_config('PORT', 5000)
     HOST                            = str_config('HOST', '0.0.0.0')
 
+    SERVER_NAME                     = str_config('SERVER_NAME', '%s:%i'.format(HOST, PORT))
     LOGGER_HANDLER_POLICY           = 'always'
