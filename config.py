@@ -32,5 +32,4 @@ class Config(object):
     PORT                            = int_config('PORT', 5000)
     HOST                            = str_config('HOST', '0.0.0.0')
 
-    SERVER_NAME                     = str_config('SERVER_NAME', '%s:%i'.format(HOST, PORT))
     LOGGER_HANDLER_POLICY           = 'always'
