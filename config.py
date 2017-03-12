@@ -30,4 +30,7 @@ class Config(object):
     USER_ROTATION_TIME              = int_config('USER_ROTATION_TIME', 60) # seconds
     TICK_INTERVAL                   = int_config('TICK_INTERVAL', 5) # seconds
 
+    PORT                            = int_config('PORT', 5000)
+    HOST                            = str_config('HOST', '0.0.0.0')
+
     LOGGER_HANDLER_POLICY           = 'always'
