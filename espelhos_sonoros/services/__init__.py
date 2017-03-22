@@ -9,7 +9,3 @@ def templates_service(app):
     @app.route('/')
     def root():
         return flask.render_template('index.html')
-
-    @app.route('/googleb4967d0db6539668.html')
-    def google_verify():
-        return flask.render_template('googleb4967d0db6539668.html')
