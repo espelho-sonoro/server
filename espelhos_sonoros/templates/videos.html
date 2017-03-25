@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block container %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-3 video-list">
+      <div id="video-list"></div>
+    </div>
+    <div class="col-xs-9 video-map" id="video-map">
+    </div>
+  </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2PJY61U_oha8c38oR-18xRFw2OD5dMeM&callback=ESPELHOS.setupMap" async defer></script>
+{% endblock %}

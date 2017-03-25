@@ -75,8 +75,30 @@ $(function() {
     });
   };
 
+  var setupMap = function() {
+    var map = new google.maps.Map(document.getElementById('video-map'));
+  };
+
+  var setupVideos = function() {
+    var updateVideoList = function(videos) {
+      var elements = videos.map(buildVideoElement);
+      $('#video-list').append(elements);
+    };
+
+    var buildVideoElement = function(video) {
+      return $('<li>').addClass('video-element').text(video.name);
+    };
+
+    $.ajax('/api/videos').done(function(videos) {
+      updateVideoList(videos);
+    });
+  };
+
+  ESPELHOS.setupMap = setupMap;
+
   setupQueue();
   setupControlls();
+  setupVideos();
 
   ESPELHOS.updateQueue();
   ESPELHOS.isController();

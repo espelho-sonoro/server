@@ -1,55 +1,10 @@
-body {
-  width: 100%;
-  background-color: #ECF0F5;
+.video-list {
+  border: 1pt solid red;
+  height: 100%;
+  overflow: scroll;
 }
-.container {
-  width: 75%;
-  float: left;
-}
-.container .video-header {
-  width: 100%;
-  height: 80px;
-  background-color: #FFF;
-  padding: 20px;
-}
-.container .video-header h1 {
-  margin: 0px;
-}
-.side-bar {
-  height: 100vh;
-}
-.right-bar {
-  width: 25%;
-  float: right;
-}
-.chat-bar {
-  background-color: #F9FAFC;
-}
-.chat-bar .queue {
-  position: fixed;
-  top: 80px;
-  bottom: 80px;
-  width: 25%;
-  padding: 0 10px;
-  right: 0;
-  overflow: auto;
-}
-.chat-bar .queue .item {
-  background-color: #E9E9EA;
-  margin: 10px 0px;
-  height: 40px;
-  border-radius: 5px;
-  color: #444444;
-}
-.chat-bar .queue .item .badge {
-  margin: 10px;
-}
-.chat-bar .actions {
-  bottom: 0;
-}
-.chat-bar .actions .message {
-  font-size: 20px;
-}
-.chat-bar .actions button {
-  font-size: 30px;
+
+.video-map {
+  height: 600px;
+  border: 1pt solid black;
 }

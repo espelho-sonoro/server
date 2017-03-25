@@ -24,6 +24,7 @@ def espelhos_sonoros(app, socketio, db):
     oauth_service(app)
     queue_service(app, socketio, queue_controller)
     control_service(app, socketio, queue_controller, camera_controller)
+    video_service(app, socketio)
 
     app.logger.info('Created services')
 
