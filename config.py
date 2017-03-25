@@ -25,6 +25,8 @@ class Config(object):
 
     GOOGLE_APP_ID                   = str_config('GOOGLE_APP_ID', '1')
     GOOGLE_APP_SECRET               = str_config('GOOGLE_APP_SECRET', '1')
+    GOOGLE_APIKEY                   = str_config('GOOGLE_APIKEY', '1')
+    YOUTUBE_PLAYLIST                = str_config('YOUTUBE_PLAYLIST', '1')
 
     USER_ROTATION_TIME              = int_config('USER_ROTATION_TIME', 60) # seconds
     TICK_INTERVAL                   = int_config('TICK_INTERVAL', 5) # seconds
