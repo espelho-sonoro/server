@@ -39,7 +39,7 @@ class QueueController(object):
 
     def list_done(self, rotation_time):
         limit_time = datetime.now() - timedelta(seconds=rotation_time)
-        self.app.logger.debug('Cleaning users that started before: %s', limit_time)
+        self.app.logger.trace('Cleaning users that started before: %s', limit_time)
         return self.dao.list_done(limit_time)
 
     def next_candidate(self):

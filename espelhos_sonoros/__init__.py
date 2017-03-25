@@ -2,6 +2,7 @@ from .controllers import *
 from .dao import *
 from .services import *
 from .workers import *
+from .utils import *
 
 def espelhos_sonoros(app, socketio, db):
     app.logger.info('Creating application.')

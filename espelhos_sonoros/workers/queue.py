@@ -17,7 +17,7 @@ class QueueWorker(object):
             while True:
                 self.move_queue(rotation_time)
                 seconds_to_next_tick = tick_interval - (datetime.now().time().second % tick_interval)
-                self.app.logger.debug('Next tick in: %d seconds', seconds_to_next_tick)
+                self.app.logger.trace('Next tick in: %d seconds', seconds_to_next_tick)
                 self.socketio.sleep(seconds_to_next_tick)
 
         self.socketio.start_background_task(target=dequeue)
@@ -28,7 +28,7 @@ class QueueWorker(object):
             self.app.logger.info('Cleaned elements: %s', done_users)
             self.controller.remove_users(done_users)
         else:
-            self.app.logger.debug('Not cleaned queue')
+            self.app.logger.trace('Not cleaned queue')
 
         candidate = self.controller.next_candidate()
 
@@ -36,6 +36,4 @@ class QueueWorker(object):
             self.controller.assign_to_control(candidate)
             self.app.logger.debug('Next controller is: %s', candidate)
         else:
-            self.app.logger.debug('Not changed controller')
-        
-        
+            self.app.logger.trace('Not changed controller')
