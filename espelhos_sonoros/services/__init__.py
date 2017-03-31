@@ -9,7 +9,3 @@ def templates_service(app):
     @app.route('/')
     def root():
         return flask.render_template('index.html')
-
-    @app.route('/videos')
-    def videos():
-        return flask.render_template('videos.html')

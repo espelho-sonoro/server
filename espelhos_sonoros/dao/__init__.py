@@ -1,3 +1,2 @@
-from .chat_message import ChatMessageDAO
-from .video_position import VideoPositionDAO
+from .video import VideoDAO
 from .queue import QueueDAO

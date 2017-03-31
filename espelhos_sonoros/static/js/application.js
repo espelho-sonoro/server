@@ -76,32 +76,74 @@ $(function() {
   };
 
   var setupMap = function() {
-    var map = new google.maps.Map(document.getElementById('video-map'));
+
+    var mapKey = 'AIzaSyD2PJY61U_oha8c38oR-18xRFw2OD5dMeM';
+    var mapSrc = 'https://maps.googleapis.com/maps/api/js?callback=ESPELHOS.mapCallback&key=' + mapKey;
+    var mapScript = $('<script>').attr('src', mapSrc).appendTo('body');
+
+    var addMapMakers = function(map) {
+      var bounds = new google.maps.LatLngBounds();
+      var videoList = $('#video-list').children('a').each(function(idx, child) {
+        var videoId = $(child).data('video-id');
+        var videoTitle = $(child).text().trim();
+        var lat = $(child).data('lat');
+        var lng = $(child).data('lng');
+
+        if (lat !== 'None' && lng !== 'None') {
+          var videoLocation = new google.maps.LatLng(lat, lng);
+
+          var markerOpts = {
+            map: map,
+            title: videoId,
+            position: videoLocation
+          };
+
+          var marker = new google.maps.Marker(markerOpts);
+          var infoWindow = new google.maps.InfoWindow({
+            content: videoTitle
+          });
+
+          var openInfoWindow = function() {
+            $(child).addClass('active');
+            infoWindow.open(map, marker);
+          };
+
+          var closeInfoWindow = function() {
+            $(child).removeClass('active');
+          };
+
+          infoWindow.addListener('closeclick', closeInfoWindow);
+          marker.addListener('click', openInfoWindow);
+          $(child).on('click', openInfoWindow);
+
+          bounds.extend(videoLocation);
+        }
+      });
+      map.fitBounds(bounds);
+    };
+
+    var mapCallback = function() {
+      var map = new google.maps.Map(document.getElementById('video-map'), {
+          zoom: 5,
+          center: {
+            lat: 0,
+            lng: 0
+        }
+      });
+      addMapMakers(map);
+    };
+
+    ESPELHOS.mapCallback = mapCallback;
   };
 
   var setupVideos = function() {
-    var updateVideoList = function(videos) {
-      var elements = videos.map(buildVideoElement);
-      $('#video-list').append(elements);
-    };
-
-    var buildVideoElement = function(video) {
-      return $('<li>').addClass('video-element').text(video.name);
-    };
-
-    $.ajax('/api/videos').done(function(videos) {
-      updateVideoList(videos);
-    });
+    var videoList = $('#video-list').children('li')
   };
 
-  ESPELHOS.setupMap = setupMap;
-
+  setupMap();
   setupQueue();
   setupControlls();
   setupVideos();
-
-  ESPELHOS.updateQueue();
-  ESPELHOS.isController();
 
   window.ESPELHOS = ESPELHOS;
 });

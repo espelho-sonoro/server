@@ -6,8 +6,8 @@ from .utils import *
 
 def espelhos_sonoros(app, socketio, db):
     app.logger.info('Creating application.')
-    video_dao = VideoPositionDAO(db)
     queue_dao = QueueDAO(db)
+    video_dao = VideoDAO(app.config)
 
     app.logger.info('Created models')
     db.create_all()
@@ -24,7 +24,7 @@ def espelhos_sonoros(app, socketio, db):
     oauth_service(app)
     queue_service(app, socketio, queue_controller)
     control_service(app, socketio, queue_controller, camera_controller)
-    video_service(app, socketio)
+    video_service(app, socketio, video_dao)
 
     app.logger.info('Created services')
 
