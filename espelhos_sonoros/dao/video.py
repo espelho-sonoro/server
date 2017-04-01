@@ -1,7 +1,7 @@
 from apiclient import discovery
 from collections import namedtuple
 
-VideoInfo = namedtuple('VideoInfo', ['id', 'title', 'latitude', 'longitude'])
+VideoInfo = namedtuple('VideoInfo', ['id', 'title', 'url', 'lat', 'lng'])
 
 class VideoDAO(object):
 
@@ -12,11 +12,12 @@ class VideoDAO(object):
     def __youtube_2_video__(self, youtube_video):
         title = youtube_video['snippet']['title']
         video_id = youtube_video['id']
+        video_url = 'https://youtube.com/watch?v=' + video_id
         recording_details = youtube_video.get('recordingDetails') or {}
         location = recording_details.get('location') or {}
         latitude = location.get('latitude')
         longitude = location.get('longitude')
-        return VideoInfo(video_id, title, latitude, longitude)
+        return VideoInfo(video_id, title, video_url, latitude, longitude)
 
 
     def list(self):

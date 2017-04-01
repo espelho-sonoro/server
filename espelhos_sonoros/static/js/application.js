@@ -77,78 +77,101 @@ $(function() {
 
   var setupMap = function() {
 
-    var mapKey = 'AIzaSyD2PJY61U_oha8c38oR-18xRFw2OD5dMeM';
-    var mapSrc = 'https://maps.googleapis.com/maps/api/js?callback=ESPELHOS.mapCallback&key=' + mapKey;
-    var mapScript = $('<script>').attr('src', mapSrc).appendTo('body');
+    var setupVideos = function(map) {
+      $.ajax('/api/videos').done(function(videos) {
+        addVideos(map, videos);
+      });
+    };
 
-    var addMapMakers = function(map) {
+    var createListElement = function(video) {
+      return $('<button>').text(video.title)
+        .addClass('list-group-item');
+    };
+
+    var createMarker = function(video) {
+      var latLng = new google.maps.LatLng(video.lat, video.lng);
+      return new google.maps.Marker({position: latLng});
+    };
+
+    var createInfoWindow = function(video) {
+      var content = $('<div>')
+        .append($('<h3>').text(video.title))
+        .append($('<div>').append($('<a>')
+                .attr('target', '_blank')
+                .attr('href', video.url)
+                .text('Assistir no Youtube')))
+        .html();
+      return new google.maps.InfoWindow({content: content});
+    };
+
+    var videoHasPosition = function(video) {
+      return video.lat && video.lng;
+    };
+
+    var addVideos = function(map, videos) {
       var bounds = new google.maps.LatLngBounds();
       var infoWindows = [];
-      var videoList = $('#video-list').children('a').each(function(idx, child) {
-        var videoId = $(child).data('video-id');
-        var videoTitle = $(child).text().trim();
-        var lat = $(child).data('lat');
-        var lng = $(child).data('lng');
+      var videoList = $('#video-list');
 
-        if (lat !== 'None' && lng !== 'None') {
-          var videoLocation = new google.maps.LatLng(lat, lng);
+      videos.forEach(function(video) {
+        var listElement = createListElement(video);
+        videoList.append(listElement);
 
-          var markerOpts = {
-            map: map,
-            title: videoId,
-            position: videoLocation
-          };
-
-          var marker = new google.maps.Marker(markerOpts);
-          var infoWindow = new google.maps.InfoWindow({
-            content: videoTitle
-          });
+        if (videoHasPosition(video)) {
+          var marker = createMarker(video);
+          var infoWindow = createInfoWindow(video);
 
           infoWindows.push(infoWindow);
 
-          var openInfoWindow = function() {
-            $(child).siblings('a').removeClass('active');
-            $(child).toggleClass('active');
+          var setListeners = function(fn) {
+            listElement.off('click');
+            listElement.on('click', fn);
+            google.maps.event.clearListeners(marker, 'click');
+            marker.addListener('click', fn);
+          };
+
+          var selectVideo = function() {
+            videoList.children('.active').removeClass('active');
+            listElement.addClass('active');
+
             infoWindows.forEach(function(iw) { iw.close(); });
             infoWindow.open(map, marker);
+
+            setListeners(deselectVideo);
           };
 
-          var closeInfoWindow = function() {
-            $(child).removeClass('active');
+          var deselectVideo = function() {
+            listElement.removeClass('active');
+            infoWindow.close();
+
+            setListeners(selectVideo);
           };
 
-          infoWindow.addListener('closeclick', closeInfoWindow);
-          marker.addListener('click', openInfoWindow);
-          $(child).on('click', openInfoWindow);
-
-          bounds.extend(videoLocation);
+          setListeners(selectVideo);
+          marker.setMap(map);
+          infoWindow.addListener('closeclick', deselectVideo);
+          bounds.extend({lat: video.lat, lng: video.lng});
         }
       });
+
       map.fitBounds(bounds);
     };
 
-    var mapCallback = function() {
-      var map = new google.maps.Map(document.getElementById('video-map'), {
-          zoom: 5,
-          center: {
-            lat: 0,
-            lng: 0
-        }
-      });
-      addMapMakers(map);
+    var mapOpts = {
+        zoom: 5,
+        center: {
+          lat: 0,
+          lng: 0
+      }
     };
 
-    ESPELHOS.mapCallback = mapCallback;
+    var map = new google.maps.Map($('#video-map').get(0), mapOpts);
+    setupVideos(map);
   };
 
-  var setupVideos = function() {
-    var videoList = $('#video-list').children('li')
-  };
-
-  setupMap();
   setupQueue();
   setupControlls();
-  setupVideos();
+  setupMap();
 
   window.ESPELHOS = ESPELHOS;
 });

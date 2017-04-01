@@ -3,18 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-3">
-      <div class="list-group" id="video-list">
-        {% for video in videos %}
-          <a
-            class="list-group-item"
-            data-video-id="{{ video.id }}"
-            data-lat="{{ video.latitude }}"
-            data-lng="{{ video.longitude }}"
-            href="#">
-            {{ video.title }}
-          </a>
-        {% endfor %}
-      </div>
+      <div class="list-group" id="video-list"></div>
     </div>
     <div class="col-xs-9 video-map" id="video-map">
     </div>
