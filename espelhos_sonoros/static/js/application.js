@@ -83,6 +83,7 @@ $(function() {
 
     var addMapMakers = function(map) {
       var bounds = new google.maps.LatLngBounds();
+      var infoWindows = [];
       var videoList = $('#video-list').children('a').each(function(idx, child) {
         var videoId = $(child).data('video-id');
         var videoTitle = $(child).text().trim();
@@ -103,8 +104,12 @@ $(function() {
             content: videoTitle
           });
 
+          infoWindows.push(infoWindow);
+
           var openInfoWindow = function() {
-            $(child).addClass('active');
+            $(child).siblings('a').removeClass('active');
+            $(child).toggleClass('active');
+            infoWindows.forEach(function(iw) { iw.close(); });
             infoWindow.open(map, marker);
           };
 
