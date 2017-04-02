@@ -78,7 +78,7 @@ $(function() {
   var setupMap = function() {
 
     var setupVideos = function(map) {
-      $.ajax('/api/videos').done(function(videos) {
+      $.getJSON('/api/videos', function(videos) {
         addVideos(map, videos);
       });
     };
@@ -96,10 +96,13 @@ $(function() {
     var createInfoWindow = function(video) {
       var content = $('<div>')
         .append($('<h3>').text(video.title))
-        .append($('<div>').append($('<a>')
+        .append($('<div>')
+            .append($('<a>')
                 .attr('target', '_blank')
                 .attr('href', video.url)
-                .text('Assistir no Youtube')))
+                .text('Assistir no Youtube'))
+            .append($('<p>')
+                .text(video.desc)))
         .html();
       return new google.maps.InfoWindow({content: content});
     };
