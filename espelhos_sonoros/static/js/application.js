@@ -11,21 +11,23 @@ $(function() {
     };
 
     var updateQueueDiv = function (queue) {
-      var newQueue = queue.map(function(element, index) {
-        return buildQueueEntry(index, element.name);
+      var queueDiv = $('#queue-list');
+      queueDiv.empty();
+      queue.forEach(function(element, index) {
+        var entry = buildQueueEntry(index, element.name);
+        queueDiv.append(entry);
       });
-      $('#queue-list').empty().append(newQueue);
     };
 
     var openControlls = function() {
-      $('.controller-container-commands').removeClass('hidden');
-      $('.controller-container-join-queue').addClass('hidden');
+      $('#controller-container-commands').removeClass('hidden');
+      $('#controller-container-join-queue').addClass('hidden');
     };
 
     var closeControlls = function() {
-      $('.controller-container-commands').addClass('hidden');
-      $('.controller-container-join-queue').removeClass('hidden');
-    }
+      $('#controller-container-commands').addClass('hidden');
+      $('#controller-container-join-queue').removeClass('hidden');
+    };
 
     var isController = function() {
       queueSocket.emit('isController');
@@ -60,11 +62,11 @@ $(function() {
 
     var moveRight = function() {
       controllSocket.emit('RIGHT');
-    }
+    };
 
     var moveLeft = function() {
       controllSocket.emit('LEFT');
-    }
+    };
 
     $('#controller-right-button').bind('click', function() {
       moveRight();
@@ -172,9 +174,9 @@ $(function() {
     setupVideos(map);
   };
 
+  window.ESPELHOS = ESPELHOS;
+
   setupQueue();
   setupControlls();
   setupMap();
-
-  window.ESPELHOS = ESPELHOS;
 });

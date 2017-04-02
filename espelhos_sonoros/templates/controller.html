@@ -6,18 +6,18 @@
         <i class="fa fa-facebook"></i> Entrar com facebook
       </a>
       <a class="btn btn-block btn-social btn-google" href="/login/google">
-        <i class="fa fa-google"></i> Entrar com google
+        <i class="fa fa-google"></i>Entrar com google
       </a>
     </div>
   {% else %}
     <div class="controller-container-user-info row">
       <img class="col-md-4" src="{{ session.user_picture }}">
-      <p class="col-md-8">{{ session.user_name }} (<a href="/logout">Logout</a>) </p> 
+      <p class="col-md-8">{{ session.user_name }} (<a href="/logout">Logout</a>) </p>
     </div>
-    <div id="controller-container-join-queue col-md-12">
-      <button id="join-queue-button"  class="btn btn-default btn-block">Entrar na fila.</button>
+    <div id="controller-container-join-queue" class="controller-container-join-queue col-md-12">
+      <button id="join-queue-button" class="btn btn-default btn-block">Entrar na fila.</button>
     </div>
-    <div id="controller-container-commands col-md-12" class="hidden">
+    <div id="controller-container-commands" class="controller-container-commands col-md-12 hidden" >
       <button id="controller-left-button" class="btn btn-default" >
         <span class="glyphicon glyphicon-arrow-left" aria-hidden="true" ></span>
       </button>
