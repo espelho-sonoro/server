@@ -78,90 +78,6 @@ $(function() {
   };
 
   var setupMap = function() {
-
-    var setupVideos = function(map) {
-      $.getJSON('/api/videos', function(videos) {
-        addVideos(map, videos);
-      });
-    };
-
-    var createListElement = function(video) {
-      return $('<button>').text(video.title)
-        .addClass('list-group-item');
-    };
-
-    var createMarker = function(video) {
-      var latLng = new google.maps.LatLng(video.lat, video.lng);
-      return new google.maps.Marker({position: latLng});
-    };
-
-    var createInfoWindow = function(video) {
-      var content = $('<div>')
-        .append($('<h3>').text(video.title))
-        .append($('<div>')
-            .append($('<a>')
-                .attr('target', '_blank')
-                .attr('href', video.url)
-                .text('Assistir no Youtube'))
-            .append($('<p>')
-                .text(video.desc)))
-        .html();
-      return new google.maps.InfoWindow({content: content});
-    };
-
-    var videoHasPosition = function(video) {
-      return video.lat && video.lng;
-    };
-
-    var addVideos = function(map, videos) {
-      var bounds = new google.maps.LatLngBounds();
-      var infoWindows = [];
-      var videoList = $('#video-list');
-
-      videos.forEach(function(video) {
-        var listElement = createListElement(video);
-        videoList.append(listElement);
-
-        if (videoHasPosition(video)) {
-          var marker = createMarker(video);
-          var infoWindow = createInfoWindow(video);
-
-          infoWindows.push(infoWindow);
-
-          var setListeners = function(fn) {
-            listElement.off('click');
-            listElement.on('click', fn);
-            google.maps.event.clearListeners(marker, 'click');
-            marker.addListener('click', fn);
-          };
-
-          var selectVideo = function() {
-            videoList.children('.active').removeClass('active');
-            listElement.addClass('active');
-
-            infoWindows.forEach(function(iw) { iw.close(); });
-            infoWindow.open(map, marker);
-
-            setListeners(deselectVideo);
-          };
-
-          var deselectVideo = function() {
-            listElement.removeClass('active');
-            infoWindow.close();
-
-            setListeners(selectVideo);
-          };
-
-          setListeners(selectVideo);
-          marker.setMap(map);
-          infoWindow.addListener('closeclick', deselectVideo);
-          bounds.extend({lat: video.lat, lng: video.lng});
-        }
-      });
-
-      map.fitBounds(bounds);
-    };
-
     var mapOpts = {
         zoom: 5,
         center: {
@@ -170,13 +86,106 @@ $(function() {
       }
     };
 
-    var map = new google.maps.Map($('#video-map').get(0), mapOpts);
-    setupVideos(map);
+    return new google.maps.Map($('#video-map').get(0), mapOpts);
+  };
+
+  var setupVideos = function(map) {
+    var infoWindows = [];
+    var bounds = new google.maps.LatLngBounds();
+
+    var createMarker = function(video) {
+      var latLng = new google.maps.LatLng(video.lat, video.lng);
+      return new google.maps.Marker({position: latLng});
+    };
+
+    var closeAllInfoWindows = function() {
+      infoWindows.forEach(function(iw) { iw.close(); });
+    };
+
+    var createInfoWindow = function(video) {
+      var content = $('<div>')
+        .append($('<h3>').text(video.title))
+        .append($('<div>')
+            .append($('<a>')
+              .attr('target', '_blank')
+              .attr('href', video.url)
+              .text('Assistir no Youtube'))
+            .append($('<p>')
+              .text(video.desc)))
+        .html();
+      return new google.maps.InfoWindow({content: content});
+    };
+
+    var createListElement = function(video) {
+      return $('<button>').text(video.title)
+        .addClass('list-group-item');
+    };
+
+    var videoHasPosition = function(video) {
+      return video.lat && video.lng;
+    };
+
+    var addVideo = function(video, map, bounds, videoList) {
+      var listElement = createListElement(video);
+      videoList.append(listElement);
+
+      if (videoHasPosition(video)) {
+        var marker = createMarker(video);
+        var infoWindow = createInfoWindow(video);
+
+        infoWindows.push(infoWindow);
+
+        var setListeners = function(fn) {
+          listElement.off('click');
+          google.maps.event.clearListeners(marker, 'click');
+
+          listElement.on('click', fn);
+          marker.addListener('click', fn);
+        };
+
+        var selectVideo = function() {
+          videoList.children('.active').removeClass('active');
+          listElement.addClass('active');
+
+          closeAllInfoWindows();
+          infoWindow.open(map, marker);
+
+          setListeners(deselectVideo);
+        };
+
+        var deselectVideo = function() {
+          listElement.removeClass('active');
+          infoWindow.close();
+
+          setListeners(selectVideo);
+        };
+
+        setListeners(selectVideo);
+        marker.setMap(map);
+        infoWindow.addListener('closeclick', deselectVideo);
+        bounds.extend({lat: video.lat, lng: video.lng});
+      }
+    };
+
+    var updateVideoList = function(map, videos) {
+      var videoList = $('#video-list');
+
+      videos.forEach(function(video) {
+        addVideo(video, map, bounds, videoList);
+      });
+
+      map.fitBounds(bounds);
+    };
+
+    $.getJSON('/api/videos', function(videos) {
+      updateVideoList(map, videos);
+    });
   };
 
   window.ESPELHOS = ESPELHOS;
 
   setupQueue();
   setupControlls();
-  setupMap();
+  var map = setupMap();
+  setupVideos(map);
 });
