@@ -13,3 +13,7 @@ def templates_service(app):
     @app.route('/videos', methods=['GET'])
     def videos():
         return flask.render_template('videos.html')
+
+    @app.route('/about', methods=['GET'])
+    def about():
+        return flask.render_template('about.html')

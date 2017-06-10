@@ -8,3 +8,12 @@
   height: 600px;
   border: 1pt solid black;
 }
+
+.carousel-inner > .item {
+  height: 400px;
+}
+
+.carousel-inner > .item > img {
+  height: 100%;
+  margin: auto;
+}
