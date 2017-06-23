@@ -14,7 +14,7 @@ def main():
     espelhos_sonoros(app, socketio, db)
 
     app.logger.info('Started server.')
-    	
+
     socketio.run(app, host=app.config['HOST'], port=app.config['PORT'])
 
 if __name__ == '__main__':
