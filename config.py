@@ -34,4 +34,6 @@ class Config(object):
     PORT                            = int_config('PORT', 5000)
     HOST                            = str_config('HOST', '0.0.0.0')
 
-    LOGGER_HANDLER_POLICY           = 'always'
+    LOGGER_HANDLER_POLICY           = str_config('LOGGER_HANDLER_POLICY', 'always')
+
+    INDEX_VIDEO                     = str_config('INDEX_VIDEO', 'Kr-dLm2B2GI')

@@ -8,11 +8,12 @@ import flask
 def templates_service(app):
     @app.route('/')
     def root():
-        return flask.render_template('index.html')
+        video_id = app.config['INDEX_VIDEO']
+        return flask.render_template('index.html', video_id=video_id)
 
-    @app.route('/videos', methods=['GET'])
+    @app.route('/soundMapping', methods=['GET'])
     def videos():
-        return flask.render_template('videos.html')
+        return flask.render_template('sound_mapping.html')
 
     @app.route('/about', methods=['GET'])
     def about():
