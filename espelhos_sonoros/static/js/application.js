@@ -102,6 +102,18 @@ $(function() {
       infoWindows.forEach(function(iw) { iw.close(); });
     };
 
+    function createBandCampPlayer(album, track) {
+      if (!album || !track) return $('<div>');
+      var url = 'https://bandcamp.com/EmbeddedPlayer/album=' + album + '/size=small/bgcol=ffffff/linkcol=0687f5/track=' + track + '/transparent=true';
+      return $('<iframe>')
+        .attr('style', 'border: 0; width: 100%; height: 42px;')
+        .attr('src', url)
+        .attr('seamless', '')
+        .append($('<a>')
+          .attr('href', 'http://espelhosonoro.bandcamp.com/album/espelho-sonoro')
+          .text('Espelho Sonoro by Espelho Sonoro'));
+    };
+
     function createInfoWindow(video) {
       var content = $('<div>')
         .append($('<h5>')
@@ -110,6 +122,8 @@ $(function() {
           .append($('<iframe>')
             .attr('src', 'https://youtube.com/embed/' + video.id)
             .attr('frameborder', 0)))
+        .append($('<div>')
+          .append(createBandCampPlayer(video.bandcampAlbum, video.bandcampTrack)))
         .html();
       return new google.maps.InfoWindow({content: content});
     };
