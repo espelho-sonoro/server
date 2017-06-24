@@ -104,14 +104,13 @@ $(function() {
 
     var createInfoWindow = function(video) {
       var content = $('<div>')
-        .append($('<h3>').text(video.title))
+        .append($('<h5>')
+          .text(video.title))
         .append($('<div>')
-            .append($('<a>')
-              .attr('target', '_blank')
-              .attr('href', video.url)
-              .text('Assistir no Youtube'))
-            .append($('<p>')
-              .text(video.desc)))
+          .append($('<a>')
+            .attr('target', '_blank')
+            .attr('href', video.url)
+            .text('Assistir no Youtube')))
         .html();
       return new google.maps.InfoWindow({content: content});
     };
