@@ -1,7 +1,7 @@
 $(function() {
   var ESPELHOS = ESPELHOS || {};
 
-  var setupQueue = function() {
+  function setupQueue() {
     var queueSocket = io('/queue');
 
     var buildQueueEntry = function(index, name) {
@@ -10,7 +10,7 @@ $(function() {
       return $('<div>').addClass('item').append(userEntry);
     };
 
-    var updateQueueDiv = function (queue) {
+    function updateQueueDiv(queue) {
       var queueDiv = $('#queue-list');
       queueDiv.empty();
       queue.forEach(function(element, index) {
@@ -19,21 +19,21 @@ $(function() {
       });
     };
 
-    var openControlls = function() {
+    function openControlls() {
       $('#controller-container-commands').removeClass('hidden');
       $('#controller-container-join-queue').addClass('hidden');
     };
 
-    var closeControlls = function() {
+    function closeControlls() {
       $('#controller-container-commands').addClass('hidden');
       $('#controller-container-join-queue').removeClass('hidden');
     };
 
-    var isController = function() {
+    function isController() {
       queueSocket.emit('isController');
     };
 
-    var updateQueue = function() {
+    function updateQueue() {
       queueSocket.emit('getQueue');
     }
 
@@ -57,14 +57,14 @@ $(function() {
     ESPELHOS.isController = isController;
   };
 
-  var setupControlls = function() {
+  function setupControlls() {
     var controllSocket = io('/control');
 
-    var moveRight = function() {
+    function moveRight() {
       controllSocket.emit('RIGHT');
     };
 
-    var moveLeft = function() {
+    function moveLeft() {
       controllSocket.emit('LEFT');
     };
 
@@ -77,7 +77,7 @@ $(function() {
     });
   };
 
-  var setupMap = function() {
+  function setupMap() {
     var mapOpts = {
         zoom: 5,
         center: {
@@ -89,20 +89,20 @@ $(function() {
     return new google.maps.Map($('#video-map').get(0), mapOpts);
   };
 
-  var setupVideos = function(map) {
+  function setupVideos(map) {
     var infoWindows = [];
     var bounds = new google.maps.LatLngBounds();
 
-    var createMarker = function(video) {
+    function createMarker(video) {
       var latLng = new google.maps.LatLng(video.lat, video.lng);
       return new google.maps.Marker({position: latLng});
     };
 
-    var closeAllInfoWindows = function() {
+    function closeAllInfoWindows() {
       infoWindows.forEach(function(iw) { iw.close(); });
     };
 
-    var createInfoWindow = function(video) {
+    function createInfoWindow(video) {
       var content = $('<div>')
         .append($('<h5>')
           .text(video.title))
@@ -114,16 +114,16 @@ $(function() {
       return new google.maps.InfoWindow({content: content});
     };
 
-    var createListElement = function(video) {
+    function createListElement(video) {
       return $('<button>').text(video.title)
         .addClass('list-group-item');
     };
 
-    var videoHasPosition = function(video) {
+    function videoHasPosition(video) {
       return video.lat && video.lng;
     };
 
-    var addVideo = function(video, map, bounds, videoList) {
+    function addVideo(video, map, bounds, videoList) {
       var listElement = createListElement(video);
       videoList.append(listElement);
 
@@ -133,7 +133,7 @@ $(function() {
 
         infoWindows.push(infoWindow);
 
-        var setListeners = function(fn) {
+        function setListeners(fn) {
           listElement.off('click');
           google.maps.event.clearListeners(marker, 'click');
 
@@ -141,7 +141,7 @@ $(function() {
           marker.addListener('click', fn);
         };
 
-        var selectVideo = function() {
+        function selectVideo() {
           videoList.children('.active').removeClass('active');
           listElement.addClass('active');
 
@@ -151,7 +151,7 @@ $(function() {
           setListeners(deselectVideo);
         };
 
-        var deselectVideo = function() {
+        function deselectVideo() {
           listElement.removeClass('active');
           infoWindow.close();
 
@@ -165,7 +165,7 @@ $(function() {
       }
     };
 
-    var updateVideoList = function(map, videos) {
+    function updateVideoList(map, videos) {
       var videoList = $('#video-list');
 
       videos.forEach(function(video) {
