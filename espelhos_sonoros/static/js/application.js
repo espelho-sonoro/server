@@ -107,10 +107,9 @@ $(function() {
         .append($('<h5>')
           .text(video.title))
         .append($('<div>')
-          .append($('<a>')
-            .attr('target', '_blank')
-            .attr('href', video.url)
-            .text('Assistir no Youtube')))
+          .append($('<iframe>')
+            .attr('src', 'https://youtube.com/embed/' + video.id)
+            .attr('frameborder', 0)))
         .html();
       return new google.maps.InfoWindow({content: content});
     };
