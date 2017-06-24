@@ -26,7 +26,7 @@ class VideoDAO(object):
 
     def list(self):
         playlist_uploads = self.youtube.playlistItems() \
-                .list(part='contentDetails', playlistId=self.playlist_id) \
+                .list(part='contentDetails', playlistId=self.playlist_id, maxResults=50) \
                 .execute()
 
         video_ids = map(lambda v: v['contentDetails']['videoId'], playlist_uploads['items'])
