@@ -36,4 +36,4 @@ class Config(object):
 
     LOGGER_HANDLER_POLICY           = str_config('LOGGER_HANDLER_POLICY', 'always')
 
-    INDEX_VIDEO                     = str_config('INDEX_VIDEO', 'Kr-dLm2B2GI')
+    INDEX_VIDEO                     = str_config('INDEX_VIDEO', 'pCRkeVJTgGg')
