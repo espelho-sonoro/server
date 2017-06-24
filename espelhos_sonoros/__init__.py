@@ -28,6 +28,6 @@ def espelhos_sonoros(app, socketio, db):
 
     app.logger.info('Created services')
 
-    queue_worker.start_dequeing()
+    # queue_worker.start_dequeing()
 
-    app.logger.info('Started workers')
+    # app.logger.info('Started workers')
