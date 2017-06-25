@@ -80,6 +80,7 @@ $(function() {
   function setupMap() {
     var mapOpts = {
         zoom: 5,
+        mapTypeId: 'satellite',
         center: {
           lat: 0,
           lng: 0
@@ -106,7 +107,7 @@ $(function() {
       if (!album || !track) return $('<div>');
       var url = 'https://bandcamp.com/EmbeddedPlayer/album=' + album + '/size=small/bgcol=ffffff/linkcol=0687f5/track=' + track + '/transparent=true';
       return $('<iframe>')
-        .attr('style', 'border: 0; width: 100%; height: 42px;')
+        .addClass('bandcamp-embedded-player')
         .attr('src', url)
         .attr('seamless', '')
         .append($('<a>')

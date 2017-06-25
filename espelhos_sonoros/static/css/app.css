@@ -21,3 +21,9 @@
 .about-sponsors-img {
   width: 100%;
 }
+
+.bandcamp-embedded-player {
+  border: 0;
+  height: 42px;
+  width: 100%;
+}
