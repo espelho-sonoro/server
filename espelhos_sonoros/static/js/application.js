@@ -2,14 +2,9 @@ $(function() {
   var ESPELHOS = ESPELHOS || {};
 
   function setupAudioStream() {
-    var audioStream = $('#audio-stream').get(0);
-    audioStream.autoplay = true;
-    audioStream.load();
-
     $('#audio-stream').on('error', function(evt) {
       console.debug(evt);
     });
-
   };
 
   function setupMap() {

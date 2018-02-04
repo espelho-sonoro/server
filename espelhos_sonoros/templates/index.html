@@ -7,9 +7,12 @@
         <div class="video-container-header">
           <h1 id="title" >Transmissão</h1>
           <img class="transmission-img" src="{{ image }}" ></img>
-          <audio class="transmission-controls" id="audio-stream" controls>
-            <source src="http://tachyon.shoutca.st:8106/espelho.ogg"
-                    type='audio/ogg; codecs=vorbis'>
+          <audio class="transmission-controls"
+                 id="audio-stream"
+                 preload="none"
+                 autoplay
+                 controls >
+            <source src="http://tachyon.shoutca.st:8106/espelho.ogg" type="audio/ogg">
             <p>Seu navegador não suporta do HTML5.</p>
           </audio>
         </div>
