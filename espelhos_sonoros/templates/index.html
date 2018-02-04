@@ -6,21 +6,16 @@
       <div class="video-container" >
         <div class="video-container-header">
           <h1 id="title" >Transmissão</h1>
-        </div>
-          <div class="text-center video-container-wrapper embed-responsive embed-responsive-16by9">
-            <iframe src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen></iframe>
-          </div>
-        </div>
-    </div>
-    <!--div class="col-md-3" >
-      <div class="sidebar-container" >
-        {% include "controller.html" %}
-        <div class="queue-container">
-          <h3 class="queue-container-header">Pessoas na fila</h3>
-          <div id="queue-list" class="queue-container-list"></div>
+          <audio id="audio-stream" controls>
+            <source src="http://tachyon.shoutca.st:8106/espelho.ogg"
+                    type='audio/ogg; codecs=vorbis'>
+              <p>Seu navegador não suporta do HTML5.</p>
+          </audio>
+          <a class="twitter-timeline" href="https://twitter.com/EspelhoSonoro?ref_src=twsrc%5Etfw">Tweets by EspelhoSonoro</a>
         </div>
       </div>
-    </div-->
+    </div>
   </div>
 </div>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}

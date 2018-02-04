@@ -1,7 +1,5 @@
-from .queue import queue_service
 from .video import video_service
 from .oauth import oauth_service
-from .control import control_service
 
 import flask
 

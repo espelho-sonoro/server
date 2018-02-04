@@ -1,80 +1,10 @@
 $(function() {
   var ESPELHOS = ESPELHOS || {};
 
-  function setupQueue() {
-    var queueSocket = io('/queue');
-
-    var buildQueueEntry = function(index, name) {
-      var badge = $('<span>').addClass('badge').text(index);
-      var userEntry = $('<p>').append(badge).append(name);
-      return $('<div>').addClass('item').append(userEntry);
-    };
-
-    function updateQueueDiv(queue) {
-      var queueDiv = $('#queue-list');
-      queueDiv.empty();
-      queue.forEach(function(element, index) {
-        var entry = buildQueueEntry(index, element.name);
-        queueDiv.append(entry);
-      });
-    };
-
-    function openControlls() {
-      $('#controller-container-commands').removeClass('hidden');
-      $('#controller-container-join-queue').addClass('hidden');
-    };
-
-    function closeControlls() {
-      $('#controller-container-commands').addClass('hidden');
-      $('#controller-container-join-queue').removeClass('hidden');
-    };
-
-    function isController() {
-      queueSocket.emit('isController');
-    };
-
-    function updateQueue() {
-      queueSocket.emit('getQueue');
-    }
-
-    $('#join-queue-button').bind('click', function() {
-      queueSocket.emit('enterQueue');
-    });
-
-    queueSocket.on('updateQueue', function(queue) {
-      updateQueueDiv(queue);
-    });
-
-    queueSocket.on('startControl', function() {
-      openControlls();
-    });
-
-    queueSocket.on('stopControl', function() {
-      closeControlls();
-    });
-
-    ESPELHOS.updateQueue = updateQueue;
-    ESPELHOS.isController = isController;
-  };
-
-  function setupControlls() {
-    var controllSocket = io('/control');
-
-    function moveRight() {
-      controllSocket.emit('RIGHT');
-    };
-
-    function moveLeft() {
-      controllSocket.emit('LEFT');
-    };
-
-    $('#controller-right-button').bind('click', function() {
-      moveRight();
-    });
-
-    $('#controller-left-button').bind('click', function() {
-      moveLeft();
-    });
+  function setupAudioStream() {
+    var audioStream = $('#audio-stream');
+    audioStream.autoplay = true;
+    audioStream.load();
   };
 
   function setupMap() {
@@ -197,8 +127,7 @@ $(function() {
 
   window.ESPELHOS = ESPELHOS;
 
-  setupQueue();
-  setupControlls();
   var map = setupMap();
   setupVideos(map);
+  setupAudioStream();
 });
