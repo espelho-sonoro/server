@@ -13,8 +13,10 @@ def espelhos_sonoros(app, socketio, db):
 
     app.logger.info('Created database')
 
-    templates_service(app)
     oauth_service(app)
+    twitter_service = TwitterService(app)
     video_service(app, socketio, audio_dao, video_dao)
+
+    templates_service(app, twitter_service)
 
     app.logger.info('Created services')

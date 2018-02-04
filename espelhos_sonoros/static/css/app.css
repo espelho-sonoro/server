@@ -9,6 +9,14 @@
   border: 1pt solid black;
 }
 
+.transmission-img {
+  width: 100%;
+}
+
+.transmission-controls {
+  width: 100%;
+}
+
 .carousel-inner > .item {
   height: 400px;
 }

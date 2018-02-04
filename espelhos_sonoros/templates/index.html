@@ -6,16 +6,15 @@
       <div class="video-container" >
         <div class="video-container-header">
           <h1 id="title" >Transmissão</h1>
-          <audio id="audio-stream" controls>
+          <img class="transmission-img" src="{{ image }}" ></img>
+          <audio class="transmission-controls" id="audio-stream" controls>
             <source src="http://tachyon.shoutca.st:8106/espelho.ogg"
                     type='audio/ogg; codecs=vorbis'>
               <p>Seu navegador não suporta do HTML5.</p>
           </audio>
-          <a class="twitter-timeline" href="https://twitter.com/EspelhoSonoro?ref_src=twsrc%5Etfw">Tweets by EspelhoSonoro</a>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}

@@ -28,6 +28,13 @@ class Config(object):
     GOOGLE_APIKEY                   = str_config('GOOGLE_APIKEY', '1')
     YOUTUBE_PLAYLIST                = str_config('YOUTUBE_PLAYLIST', '1')
 
+    TWITTER_CONSUMER_TOKEN          = str_config('TWITTER_CONSUMER_TOKEN', '1')
+    TWITTER_CONSUMER_SECRET         = str_config('TWITTER_CONSUMER_SECRET', '1')
+    TWITTER_ACCESS_TOKEN            = str_config('TWITTER_ACCESS_TOKEN', '1')
+    TWITTER_ACCESS_SECRET           = str_config('TWITTER_ACCESS_SECRET', '1')
+
+    TWITTER_USER_ID                 = str_config('TWITTER_USER_ID', '1')
+
     USER_ROTATION_TIME              = int_config('USER_ROTATION_TIME', 60) # seconds
     TICK_INTERVAL                   = int_config('TICK_INTERVAL', 5) # seconds
 
