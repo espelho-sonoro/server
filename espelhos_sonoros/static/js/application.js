@@ -2,9 +2,14 @@ $(function() {
   var ESPELHOS = ESPELHOS || {};
 
   function setupAudioStream() {
-    var audioStream = $('#audio-stream');
+    var audioStream = $('#audio-stream').get(0);
     audioStream.autoplay = true;
     audioStream.load();
+
+    $('#audio-stream').on('error', function(evt) {
+      console.debug(evt);
+    });
+
   };
 
   function setupMap() {
@@ -17,7 +22,9 @@ $(function() {
       }
     };
 
-    return new google.maps.Map($('#video-map').get(0), mapOpts);
+    var map = $('#video-map').map(m => new google.maps.Map(m, mapOpts));
+
+    return map.get(0);
   };
 
   function setupVideos(map) {
@@ -128,6 +135,8 @@ $(function() {
   window.ESPELHOS = ESPELHOS;
 
   var map = setupMap();
-  setupVideos(map);
+  if (map != undefined) {
+    setupVideos(map);
+  }
   setupAudioStream();
 });
