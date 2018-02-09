@@ -17,9 +17,12 @@ $(function() {
       }
     };
 
-    var map = $('#video-map').map(m => new google.maps.Map(m, mapOpts));
-
-    return map.get(0);
+    var map = $('#video-map').get(0);
+    if (map !== null && map !== undefined) {
+      return new google.maps.Map(map, mapOpts);
+    } else {
+      return undefined;
+    }
   };
 
   function setupVideos(map) {
