@@ -3,8 +3,8 @@ def video_info(db):
         video_id = db.Column(db.String, primary_key=True)
         bandcamp_track_id = db.Column(db.String)
         bandcamp_album_id = db.Column(db.String)
-        rec_latitude = db.Column(db.String)
-        rec_longitude = db.Column(db.String)
+        rec_latitude = db.Column(db.Float)
+        rec_longitude = db.Column(db.Float)
 
     def __init__(self, video_id, bandcamp_track_id, bandcamp_album_id, rec_latitude, rec_longitude):
         self.video_id = video_id
