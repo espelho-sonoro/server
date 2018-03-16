@@ -6,7 +6,7 @@ def espelhos_sonoros(app, socketio, db):
     app.logger.info('Creating application.')
     queue_dao = QueueDAO(db)
     video_dao = VideoDAO(app.config)
-    video_info_dao = VideoInfoDAO(app.config)
+    video_info_dao = VideoInfoDAO(db)
     audio_dao = AudioDAO(app.config)
 
     app.logger.info('Created models')
