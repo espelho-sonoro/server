@@ -20,7 +20,7 @@ class AudioDAO(object):
         pass
 
     def track_by_video(self, video_id):
-        track_id = BANDCAMP_TRACKS[video_id]
+        track_id = BANDCAMP_TRACKS.get(video_id)
         if track_id != None:
             return TrackInfo(track_id, BANDCAMP_ALBUM)
         else:
