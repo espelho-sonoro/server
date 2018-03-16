@@ -6,7 +6,7 @@ def video_info(db):
         rec_latitude = db.Column(db.String)
         rec_longitude = db.Column(db.String)
 
-    def __init__(self, video_id, bandcamp_track_id, bandcamp_album_id rec_latitude, rec_longitude):
+    def __init__(self, video_id, bandcamp_track_id, bandcamp_album_id, rec_latitude, rec_longitude):
         self.video_id = video_id
         self.bandcamp_track_id = bandcamp_track_id
         self.bandcamp_album_id = bandcamp_album_id
