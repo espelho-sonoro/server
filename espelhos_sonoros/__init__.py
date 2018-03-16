@@ -7,7 +7,6 @@ def espelhos_sonoros(app, socketio, db):
     queue_dao = QueueDAO(db)
     video_dao = VideoDAO(app.config)
     video_info_dao = VideoInfoDAO(db)
-    audio_dao = AudioDAO(app.config)
 
     app.logger.info('Created models')
     db.create_all()
@@ -16,7 +15,7 @@ def espelhos_sonoros(app, socketio, db):
 
     oauth_service(app)
     twitter_service = TwitterService(app)
-    video_service(app, socketio, audio_dao, video_dao, video_info_dao)
+    video_service(app, socketio, video_dao, video_info_dao)
 
     templates_service(app, twitter_service)
 
