@@ -10,7 +10,7 @@ def video_service(app, socketio, audio_dao, video_dao, video_info_dao):
             enchanced_video['bandcampTrack'] = track.id
             enchanced_video['bandcampAlbum'] = track.album
         if video_info:
-            if video_info.bandcamp_track_id:
+            if video_info.bandcamp_track_id and video_info.bandcamp_album_id:
                 enchanced_video['bandcampTrack'] = video_info.bandcamp_track_id
                 enchanced_video['bandcampAlbum'] = video_info.bandcamp_album_id
             if video_info.rec_latitude and video_info.rec_longitude:
