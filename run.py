@@ -3,6 +3,7 @@ from espelhos_sonoros import *
 import flask
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
+from flask_sslify import SSLify
 
 def main():
     app = flask.Flask('espelhos_sonoros')
@@ -14,6 +15,9 @@ def main():
     espelhos_sonoros(app, socketio, db)
 
     app.logger.info('Started server.')
+
+    if not app.config['DEBUG']:
+        SSLify(app)
 
     socketio.run(app, host=app.config['HOST'], port=app.config['PORT'])
 
