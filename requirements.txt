@@ -3,6 +3,7 @@ Flask-OAuthlib
 Flask-SocketIO
 Flask-SQLAlchemy
 Flask-SSLify
+Flask-Admin
 eventlet
 psycopg2
 google-api-python-client

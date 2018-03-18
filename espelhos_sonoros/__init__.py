@@ -1,3 +1,6 @@
+from flask_admin import Admin
+from flask_amdin.contrib.sqla import ModelView
+
 from .dao import *
 from .services import *
 from .utils import *
@@ -20,3 +23,6 @@ def espelhos_sonoros(app, socketio, db):
     templates_service(app, twitter_service)
 
     app.logger.info('Created services')
+
+    admin = Admin(app, name='Espelhos Sonoros', endpoint='cQU1xV0GQD9YykTpCdU2A9ZKeIuyPL6p9DaBBKKwfMv7agldxM')
+    admin.add_view(ModelView(video_info.clazz, db.session))
