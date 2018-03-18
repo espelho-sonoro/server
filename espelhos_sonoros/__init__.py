@@ -24,5 +24,5 @@ def espelhos_sonoros(app, socketio, db):
 
     app.logger.info('Created services')
 
-    admin = Admin(app, name='Espelhos Sonoros', endpoint='cQU1xV0GQD9YykTpCdU2A9ZKeIuyPL6p9DaBBKKwfMv7agldxM')
+    admin = Admin(app, name='Espelhos Sonoros')
     admin.add_view(ModelView(video_info_dao.clazz, db.session))
